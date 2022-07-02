@@ -1,56 +1,11 @@
 import { useMemo, useState } from "react";
-import logo from "./assets/logo.svg";
+import Safe from "./components/Safe";
+import SearchForm from "./components/SearchForm";
+import Table from "./components/Table";
+import { cards } from "./constant";
 
 function App() {
-  const [searchValue, setSearchValue] = useState<string>("");
-
-  const handleSearchSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-  };
-
-  const cards = useMemo(() => {
-    return [
-      {
-        title: "مستويات القيم",
-        bg: "bg-purple-500",
-        icon: <i className="bx bx-layer"></i>,
-        onClick: () => {},
-      },
-      {
-        title: "مصدر القيم",
-        bg: "bg-orange-500",
-        icon: <i className="bx bx-cube-alt"></i>,
-        onClick: () => {},
-      },
-      {
-        title: "القيم بمعايير الرقي",
-        bg: "bg-blue-400",
-        icon: <i className="bx bx-line-chart"></i>,
-        onClick: () => {},
-      },
-      {
-        title: "قيم سلم السعادة",
-        bg: "bg-yellow-500",
-        icon: "",
-        onClick: () => {},
-      },
-      {
-        title: "مدرسة القيم",
-        bg: "bg-purple-500",
-        icon: "",
-        onClick: () => {},
-      },
-      { title: "نوع القيم", bg: "bg-stone-500", icon: "", onClick: () => {} },
-      { title: "وقع القيم", bg: "bg-lime-500", icon: "", onClick: () => {} },
-      { title: "إضافة قيمة ", bg: "bg-gray-600", icon: "", onClick: () => {} },
-      {
-        title: "عرض قائمة القيم",
-        bg: "bg-slate-500",
-        icon: "",
-        onClick: () => {},
-      },
-    ];
-  }, []);
+  const [data, setData] = useState<string>();
 
   return (
     <div className="App">
@@ -84,28 +39,16 @@ function App() {
         <span className="block w-3/4 mx-auto h-1 bg-slate-100 my-12 rounded-lg"></span>
 
         {/* search form */}
-        <form
-          onSubmit={handleSearchSubmit}
-          className="flex item-center md:w-3/4 mx-auto"
-        >
-          <input
-            type="search"
-            className="flex-1 border border-gray-200 rounded-r-lg p-3"
-            value={searchValue}
-            onChange={(e: React.FormEvent<HTMLInputElement>) =>
-              setSearchValue(e.currentTarget.value)
-            }
-          />
-          <button
-            type="submit"
-            onClick={handleSearchSubmit}
-            className="bg-blue-500 text-white text-3xl px-5 py-3 rounded-l-lg flex item-center justify-center"
-          >
-            <i className="bx bx-search"></i>
-          </button>
-        </form>
+        <SearchForm setData={(value: string) => setData(value)} />
 
         {/* search result */}
+        <Safe data={data}>
+          <Table th={[""]}>
+            <tr>
+              <td></td>
+            </tr>
+          </Table>
+        </Safe>
       </main>
     </div>
   );
