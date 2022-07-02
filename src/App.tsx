@@ -9,7 +9,7 @@ function App() {
 
   return (
     <div className="App">
-      <nav className=" bg-blue-500">
+      <nav className=" bg-primary">
         <div className="container mx-auto p-5 md:p-8">
           <h1 className="text-3xl text-white font-bold">
             مستويات القيم الأخلاقية
