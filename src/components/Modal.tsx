@@ -32,7 +32,7 @@ const Modal: React.FC<props> = ({ close, isVisible, children }) => {
   return (
     <>
       {isVisible && (
-        <div className="modal inset-0 fixed z-50 h-screen w-full flex justify-center items-center">
+        <div className="modal inset-0 fixed z-50 h-screen w-screen flex justify-center items-center bg-light-opacity">
           <motion.div
             variants={animation}
             initial="initial"

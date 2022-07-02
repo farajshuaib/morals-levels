@@ -3,9 +3,46 @@ import Safe from "./components/Safe";
 import SearchForm from "./components/SearchForm";
 import Table from "./components/Table";
 import { cards } from "./components/CardList";
+import Modal from "./components/Modal";
 
 function App() {
   const [data, setData] = useState<string>();
+  const [modalContent, setModalContent] = useState<React.ReactNode>();
+
+  const handleClick = (buttonId: string, payload: any) => {
+    switch (buttonId) {
+      case "levels": {
+        break;
+      }
+      case "source": {
+        break;
+      }
+      case "standards": {
+        break;
+      }
+      case "ladder": {
+        break;
+      }
+      case "school": {
+        break;
+      }
+      case "type": {
+        break;
+      }
+      case "activation": {
+        break;
+      }
+      case "addValue": {
+        break;
+      }
+      case "showValues": {
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  };
 
   return (
     <div className="App">
@@ -26,7 +63,8 @@ function App() {
           {cards.map((item, index) => (
             <button
               key={index}
-              onClick={item.onClick}
+              id={item.id}
+              onClick={() => setModalContent(item.modalContent)}
               className={`${item.bg} p-8 md:p-16 rounded-md shadow-sm hover:shadow-2xl transition-all duration-150 transform hover:scale-105 flex items-start justify-center text-lg md:text-2xl text-white font-medium`}
             >
               <span className="text-4xl">{item.icon}</span>
@@ -65,6 +103,19 @@ function App() {
           </span>
         </h6>
       </footer>
+
+      <Modal isVisible={!!modalContent} close={() => setModalContent(null)}>
+        <div className="bg-white w-full p-8 rounded-lg relative">
+          <button
+            className="float-left bg-light-opacity rounded-full h-8 w-8 flex items-center justify-center"
+            onClick={() => setModalContent(null)}
+          >
+            <i className="bx bx-x text-4xl "></i>
+          </button>
+          <div className="clear-both"></div>
+          {modalContent}
+        </div>
+      </Modal>
     </div>
   );
 }
