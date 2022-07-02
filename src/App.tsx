@@ -2,14 +2,14 @@ import { useMemo, useState } from "react";
 import Safe from "./components/Safe";
 import SearchForm from "./components/SearchForm";
 import Table from "./components/Table";
-import { cards } from "./constant";
+import { cards } from "./components/CardList";
 
 function App() {
   const [data, setData] = useState<string>();
 
   return (
     <div className="App">
-      <nav className="fixed z-50 w-full bg-blue-500">
+      <nav className=" bg-blue-500">
         <div className="container mx-auto p-5 md:p-8">
           <h1 className="text-3xl text-white font-bold">
             مستويات القيم الأخلاقية
@@ -17,7 +17,7 @@ function App() {
         </div>
       </nav>
 
-      <main className="container mx-auto px-5 md:px-8 pt-28">
+      <main className="container mx-auto px-5 md:px-8 py-12">
         {/*  cards  */}
         <section
           id="cards"
@@ -50,6 +50,21 @@ function App() {
           </Table>
         </Safe>
       </main>
+
+      <footer className="bg-gray-800 p-8">
+        <img
+          src="https://uot.edu.ly/resources/img/logo/it-logo_1583787298.png"
+          loading="lazy"
+          alt="جامعة طرابلس - كلية تقينة المعلومات "
+          className="mx-auto"
+        />
+        <h6 className="text-center text-transparent bg-opacity-40  bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 uppercase">
+          <span className="font-bold text-5xl block">IT - UOT </span>
+          <span className="font-extrabold  tracking-widest leading-relaxed text-8xl">
+            moralities
+          </span>
+        </h6>
+      </footer>
     </div>
   );
 }
