@@ -1,4 +1,5 @@
 interface props {
+  id?: String;
   valueName: String;
   ExaggerateValueName: String;
   DerelictionValueName: String;
@@ -11,7 +12,9 @@ interface props {
   ActivationValue: String;
 }
 
+const localStorageVals = localStorage.getItem("values");
 class MoralValues {
+  private id: String = "";
   private valueName: String = "";
   private ExaggerateValueName: String = "";
   private DerelictionValueName: String = "";
@@ -23,8 +26,8 @@ class MoralValues {
   private TypedValue: String = "";
   private ActivationValue: String = "";
 
-  private values: Array<this> = localStorage.getItem("values")
-    ? JSON.parse(localStorage.getItem("values")!)
+  private values: Array<this> = localStorageVals
+    ? JSON.parse(localStorageVals)
     : [];
 
   constructor({
@@ -39,18 +42,20 @@ class MoralValues {
     TypedValue,
     ActivationValue,
   }: props) {
-    this.valueName = valueName;
-    this.ExaggerateValueName = ExaggerateValueName;
-    this.DerelictionValueName = DerelictionValueName;
-    this.StandardValue = StandardValue;
-    this.SourcedValue = SourcedValue;
-    this.LevelValue = LevelValue;
-    this.LadderValue = LadderValue;
-    this.SchoolValue = SchoolValue;
-    this.TypedValue = TypedValue;
-    this.ActivationValue = ActivationValue;
+    this.setId(new Date().getTime().toString());
+    this.setValueName(valueName);
+    this.setExaggerateValueName(ExaggerateValueName);
+    this.setDerelictionValueName(DerelictionValueName);
+    this.setStandardValue(StandardValue);
+    this.setSourcedValue(SourcedValue);
+    this.setLevelValue(LevelValue);
+    this.setLadderValue(LadderValue);
+    this.setSchoolValue(SchoolValue);
+    this.setTypedValue(TypedValue);
+    this.setActivauionValue(ActivationValue);
 
     this.saveValues({
+      id: this.id,
       valueName,
       ExaggerateValueName,
       DerelictionValueName,
@@ -65,7 +70,7 @@ class MoralValues {
   }
 
   private saveValues(values: props) {
-    const prevValues = JSON.parse(localStorage.getItem("values")!);
+    const prevValues = localStorageVals ? JSON.parse(localStorageVals) : [];
     const newValues = [...prevValues, values];
     this.values = newValues;
     localStorage.setItem("values", JSON.stringify(newValues));
@@ -73,6 +78,14 @@ class MoralValues {
 
   public getValues(): Array<this> {
     return this.values;
+  }
+
+  public setId(id: String): void {
+    this.id = id;
+  }
+
+  public getId(): String {
+    return this.id;
   }
 
   public setValueName(valueName: String): void {
