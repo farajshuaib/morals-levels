@@ -18,18 +18,18 @@ const ModalContent: React.FC<ModalContentProps> = ({ title, description }) => {
 
 export const cards = [
   {
-    title: "مستويات القيم",
-    bg: "bg-purple-500",
-    icon: <i className="bx bx-layer"></i>,
+    title: "القيم بمعايير الرقي",
+    bg: "bg-blue-400",
+    icon: <i className="bx bx-line-chart"></i>,
     modalContent: (
       <ModalContent
-        title={"مستويات القيم"}
+        title={"القيم بمعايير الرقي"}
         description={
           "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور"
         }
       />
     ),
-    id: "levels",
+    id: "standards",
   },
   {
     title: "مصدر القيم",
@@ -46,19 +46,20 @@ export const cards = [
     id: "source",
   },
   {
-    title: "القيم بمعايير الرقي",
-    bg: "bg-blue-400",
-    icon: <i className="bx bx-line-chart"></i>,
+    title: "مستويات القيم",
+    bg: "bg-purple-500",
+    icon: <i className="bx bx-layer"></i>,
     modalContent: (
       <ModalContent
-        title={"القيم بمعايير الرقي"}
+        title={"مستويات القيم"}
         description={
           "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور"
         }
       />
     ),
-    id: "standards",
+    id: "levels",
   },
+
   {
     title: "قيم سلم السعادة",
     bg: "bg-yellow-500",
@@ -119,7 +120,12 @@ export const cards = [
     title: "إضافة قيمة ",
     bg: "bg-gray-600",
     icon: <i className="bx bx-plus-circle"></i>,
-    modalContent: <ModalContent title={"إضافة قيمة اخلاقية"} description={<AddValueForm />} />,
+    modalContent: (
+      <ModalContent
+        title={"إضافة قيمة اخلاقية"}
+        description={<AddValueForm />}
+      />
+    ),
     id: "addValue",
   },
   {

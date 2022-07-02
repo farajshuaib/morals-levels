@@ -1,6 +1,7 @@
 import React from "react";
 import { ErrorMessage, Field, Formik } from "formik";
 import { addValueValidationSchema } from "../services/validation";
+import MoralValues from "../models/moralValues";
 
 const AddValueForm: React.FC = () => {
   return (
@@ -17,8 +18,15 @@ const AddValueForm: React.FC = () => {
         TypedValue: "",
         ActivationValue: "",
       }}
-      onSubmit={(values, { setSubmitting }) => {}}
       validationSchema={addValueValidationSchema}
+      onSubmit={(values, { setSubmitting }) => {
+        try {
+          const moralValues = new MoralValues(values);
+          setSubmitting(false);
+        } catch (e) {
+          setSubmitting(false);
+        }
+      }}
     >
       {({ values, handleChange, handleBlur, handleReset, handleSubmit }) => (
         <div>
@@ -97,43 +105,57 @@ const AddValueForm: React.FC = () => {
               label: "القيم بمعايير الرقي",
               name: "StandardValue",
               placeholder: "",
-              values: [],
+              values: [
+                "الإنسان",
+                "الدين",
+                "المادة",
+                "الحياة",
+                "الآخر",
+                "العلم",
+                "العدل",
+                "الزمن",
+              ],
             },
             {
               label: "مصدر القيم",
               name: "SourcedValue",
               placeholder: "",
-              values: [],
+              values: [
+                "الدين",
+                "التقاليد و الاعراف",
+                "القانون",
+                "المشاعر (الفطرة)",
+              ],
             },
             {
               label: "مستوى القيم",
               name: "LevelValue",
               placeholder: "",
-              values: [],
+              values: ["الحرب", "التواصل", "التعايش", "الأساس"],
             },
             {
               label: "سلم القيم",
               name: "LadderValue",
               placeholder: "",
-              values: [],
+              values: ["العقل", "القلب", "الجوارح"],
             },
             {
               label: "مدرسة القيم",
               name: "SchoolValue",
               placeholder: "",
-              values: [],
+              values: ["الحدث", "الغاية"],
             },
             {
               label: "نوع القيم",
               name: "TypedValue",
               placeholder: "",
-              values: [],
+              values: ["مهنية", "شخصية"],
             },
             {
-              label: "مفعلة",
+              label: "واقع القيمة",
               name: "ActivationValue",
               placeholder: "",
-              values: [],
+              values: ["مفعلة", "مجردة"],
             },
           ].map((item, index) => (
             <div key={index} className="my-5 w-full">

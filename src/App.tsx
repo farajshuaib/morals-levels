@@ -9,41 +9,6 @@ function App() {
   const [data, setData] = useState<string>();
   const [modalContent, setModalContent] = useState<React.ReactNode>();
 
-  const handleClick = (buttonId: string, payload: any) => {
-    switch (buttonId) {
-      case "levels": {
-        break;
-      }
-      case "source": {
-        break;
-      }
-      case "standards": {
-        break;
-      }
-      case "ladder": {
-        break;
-      }
-      case "school": {
-        break;
-      }
-      case "type": {
-        break;
-      }
-      case "activation": {
-        break;
-      }
-      case "addValue": {
-        break;
-      }
-      case "showValues": {
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  };
-
   return (
     <div className="App">
       <nav className=" bg-primary">
@@ -67,8 +32,8 @@ function App() {
               onClick={() => setModalContent(item.modalContent)}
               className={`${item.bg} p-8 md:p-16 rounded-md shadow-sm hover:shadow-2xl transition-all duration-150 transform hover:scale-105 flex items-start justify-center text-lg md:text-2xl text-white font-medium`}
             >
-              <span className="text-4xl">{item.icon}</span>
               <h3 className="mx-1">{item.title}</h3>
+              <span className="text-4xl">{item.icon}</span>
             </button>
           ))}
         </section>
@@ -97,7 +62,10 @@ function App() {
           className="mx-auto"
         />
         <h6 className="text-center text-transparent bg-opacity-40  bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 uppercase">
-          <span className="font-bold text-5xl block">IT - UOT </span>
+          <span className="font-bold text-5xl block ">IT - UOT </span>
+          <span className="font-bold text-5xl block ">
+            Software engineering
+          </span>
           <span className="font-extrabold  tracking-widest leading-relaxed text-8xl">
             moralities
           </span>

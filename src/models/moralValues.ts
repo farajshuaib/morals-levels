@@ -1,3 +1,16 @@
+interface props {
+  valueName: String;
+  ExaggerateValueName: String;
+  DerelictionValueName: String;
+  StandardValue: String;
+  SourcedValue: String;
+  LevelValue: String;
+  LadderValue: String;
+  SchoolValue: String;
+  TypedValue: String;
+  ActivationValue: String;
+}
+
 class MoralValues {
   private valueName: String = "";
   private ExaggerateValueName: String = "";
@@ -10,7 +23,57 @@ class MoralValues {
   private TypedValue: String = "";
   private ActivationValue: String = "";
 
-  constructor() {}
+  private values: Array<this> = localStorage.getItem("values")
+    ? JSON.parse(localStorage.getItem("values")!)
+    : [];
+
+  constructor({
+    valueName,
+    ExaggerateValueName,
+    DerelictionValueName,
+    StandardValue,
+    SourcedValue,
+    LevelValue,
+    LadderValue,
+    SchoolValue,
+    TypedValue,
+    ActivationValue,
+  }: props) {
+    this.valueName = valueName;
+    this.ExaggerateValueName = ExaggerateValueName;
+    this.DerelictionValueName = DerelictionValueName;
+    this.StandardValue = StandardValue;
+    this.SourcedValue = SourcedValue;
+    this.LevelValue = LevelValue;
+    this.LadderValue = LadderValue;
+    this.SchoolValue = SchoolValue;
+    this.TypedValue = TypedValue;
+    this.ActivationValue = ActivationValue;
+
+    this.saveValues({
+      valueName,
+      ExaggerateValueName,
+      DerelictionValueName,
+      StandardValue,
+      SourcedValue,
+      LevelValue,
+      LadderValue,
+      SchoolValue,
+      TypedValue,
+      ActivationValue,
+    });
+  }
+
+  private saveValues(values: props) {
+    const prevValues = JSON.parse(localStorage.getItem("values")!);
+    const newValues = [...prevValues, values];
+    this.values = newValues;
+    localStorage.setItem("values", JSON.stringify(newValues));
+  }
+
+  public getValues(): Array<this> {
+    return this.values;
+  }
 
   public setValueName(valueName: String): void {
     this.valueName = valueName;
