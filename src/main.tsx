@@ -7,16 +7,21 @@ import "react-toastify/dist/ReactToastify.css";
 import "./styles/index.css";
 import { registerSW } from "virtual:pwa-register";
 
-
 if ("serviceWorker" in navigator) {
   // && !/localhost/.test(window.location)) {
   registerSW({
+    onNeedRefresh() {
+      console.log("onNeedRefresh")
+    },
+    onOfflineReady() {
+      console.log("onOfflineReady")
+    },
     onRegisterError(error) {
-      console.log(error);
+      console.log("onRegisterError", error);
     },
   });
 } else {
-  console.info("browser does not support service worker");
+  console.log("browser does not support service worker");
 }
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

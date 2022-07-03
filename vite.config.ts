@@ -11,8 +11,10 @@ export default defineConfig({
       registerType: "autoUpdate",
       useCredentials: true,
       workbox: {
+        sourcemap: true,
         clientsClaim: true,
         skipWaiting: true,
+
       },
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: {
