@@ -7,7 +7,9 @@ import {
   updateDoc,
   where,
   query,
-  getDoc
+  getDoc,
+  doc,
+  deleteDoc
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 
@@ -52,11 +54,17 @@ class Values {
   public async update(value: MoralValues, id: String) {
     return new Promise<void>(async (resolve, reject) => {
       try {
-        const q = query(collection(db, "values"), where("id", "==", id));
-        const querySnapshot = await getDocs(q);
+        const docRef = doc(db, "values");
+
         // getDoc();
-        // await updateDoc(, { ...value });
-        this.values.push(value);
+        await updateDoc(docRef, { ...value });
+        this.values = this.values.map((moral: MoralValues) => {
+          if (moral.getId() == value.getId()) {
+            return value;
+          } else {
+            return moral;
+          }
+        });
         resolve();
       } catch (e) {
         console.error("error", e);
@@ -66,17 +74,11 @@ class Values {
         reject(e);
       }
     });
-
-    this.values = this.values.map((moral: MoralValues) => {
-      if (moral.getId() == value.getId()) {
-        return value;
-      } else {
-        return moral;
-      }
-    });
   }
 
-  public getById(id: string) {
+  public async getById(id: string) {
+    const docRef = doc(db, "values");
+    const document = await getDoc(docRef);
     return this.values.find((value) => value.getId() == id);
   }
 
