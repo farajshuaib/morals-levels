@@ -4,16 +4,22 @@ import SearchForm from "./components/SearchForm";
 import Table from "./components/Table";
 import { cards } from "./components/CardList";
 import Modal from "./components/Modal";
-import Values from "./models/Values";
+import { useRegisterSW } from "virtual:pwa-register/react";
+
+const intervalMS = 60 * 60 * 1000;
 
 function App() {
   const [data, setData] = useState<string>();
   const [modalContent, setModalContent] = useState<React.ReactNode>();
 
-  useEffect(() => {
-    const values = new Values();
-    values.getValuesFromStorage();
-  }, []);
+  useRegisterSW({
+    onRegistered(r) {
+      r &&
+        setInterval(() => {
+          r.update();
+        }, intervalMS);
+    },
+  });
 
   return (
     <div className="App">
