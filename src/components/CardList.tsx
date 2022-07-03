@@ -1,18 +1,32 @@
+import { useEffect, useState } from "react";
 import AddValueForm from "./AddValueForm";
 import ShowValues from "./showValues";
 
 interface ModalContentProps {
   title: string;
   description: string | React.ReactNode;
+  classification?: string[];
 }
 
-const ModalContent: React.FC<ModalContentProps> = ({ title, description }) => {
+const ModalContent: React.FC<ModalContentProps> = ({
+  title,
+  description,
+  classification,
+}) => {
+  console.log("classification", classification);
   return (
     <section className="w-full">
-      <h1 className="text-3xl">{title}</h1>
-      <div className="text-xl text-gray-700 mt-4 tracking-wide leading-relaxed max-h-96 overflow-auto">
+      <h1 className="text-4xl">{title}</h1>
+      <div className="text-2xl text-gray-500 mt-8 tracking-wide leading-relaxed max-h-96 overflow-auto">
         {description}
       </div>
+      {classification && classification.length > 0 && (
+        <ul className="mt-5 flex items-center gap-5 text-gray-700 text-3xl">
+          {classification.map((item, index) => (
+            <li key={index}>{item} {(index !== classification.length - 1) && "|"}</li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 };
@@ -24,12 +38,23 @@ export const cards = [
     icon: <i className="bx bx-line-chart"></i>,
     modalContent: (
       <ModalContent
-        title={"القيم بمعايير الرقي"}
+        title={"القيم بمعايير رقي المجتمع"}
+        classification={[
+          "الأنسان",
+          "الدين",
+          "المادة",
+          "الحياة",
+          "الأخر",
+          "العلم",
+          "العدل",
+          "الزمن",
+        ]}
         description={
-          "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور"
+          "تعبر معايير قيم رقي المجتمع عن تصنيفات القيمة حسب علاقتها بالعناصر الأساسية التي تؤثر على المجتمع وهي:"
         }
       />
     ),
+        
     id: "standards",
   },
   {
@@ -39,11 +64,18 @@ export const cards = [
     modalContent: (
       <ModalContent
         title={"مصدر القيم"}
+        classification={[
+          "الدين",
+          "التقاليد",
+          "القانون",
+          "المشاعر"
+        ]}
         description={
-          "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور"
+          "تعددت مصادر القيم لدى الفرد حسب الوسط الاجتماعي, الديانة والحقبة الزمنية, تم حصر أهم مصادر القيم في الآتي:"
         }
       />
     ),
+
     id: "source",
   },
   {
@@ -53,8 +85,14 @@ export const cards = [
     modalContent: (
       <ModalContent
         title={"مستويات القيم"}
+        classification={[
+          "الأساس",
+          "التعايش",
+          "التواصل",
+          "الحرب"
+        ]}
         description={
-          "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور"
+          "ترتبت القيم على المجتمعات ترتيباً هرمياِ, تعرف بالسلم وهي مرتبة كالآتي:"
         }
       />
     ),
@@ -68,8 +106,13 @@ export const cards = [
     modalContent: (
       <ModalContent
         title={"قيم سلم السعادة"}
+        classification={[
+          "العقل",
+          "القلب",
+          "الجوارح"
+        ]}
         description={
-          "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور"
+          "تحقق القيم الأخلاقية السعادة, والسعادة المحققة من فعل قيمة اخلاقية تصنيفات حسب نوع السعادة كالآتي"
         }
       />
     ),
@@ -82,8 +125,12 @@ export const cards = [
     modalContent: (
       <ModalContent
         title={"مدرسة القيم"}
+        classification={[
+          "الحدثية",
+          "الغائية"
+        ]}
         description={
-          "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور"
+          "تختلف القيم في كيفية تحديدها كقيم حسنة, بعضها يعتبر حسن بإعتبار الحدث حسن, وبعض القيم تأخد الغاية في عين الاعتبار إذا كانت حسنة ام خبيثة."
         }
       />
     ),
@@ -96,9 +143,11 @@ export const cards = [
     modalContent: (
       <ModalContent
         title={"نوع القيم"}
-        description={
-          "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور"
-        }
+        classification={[
+          "مهنية",
+          "شخصية"
+        ]}
+        description={"نوع القيم يصنف القيمة حسب نطاق إستخدام القيمة كالآتي :"}
       />
     ),
     id: "type",
@@ -106,12 +155,16 @@ export const cards = [
   {
     title: "وقع القيم",
     bg: "bg-lime-500",
-    icon: <i className="bx bxs-grid"></i>,
+    icon: <i className="bx bxs-group"></i>,
     modalContent: (
       <ModalContent
         title={"وقع القيم"}
+        classification={[
+          "مفعلة",
+          "مجردة"
+        ]}
         description={
-          "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور"
+          "يحدد هذا المعيار حالة تفعيل القيمة في المجتمع المحيط , وهي كالآتي :"
         }
       />
     ),
