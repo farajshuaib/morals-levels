@@ -1,10 +1,28 @@
-import { useEffect, useMemo, useState } from "react";
+import { useState } from "react";
 import Safe from "./components/Safe";
 import SearchForm from "./components/SearchForm";
 import Table from "./components/Table";
 import { cards } from "./components/CardList";
 import Modal from "./components/Modal";
 import { useRegisterSW } from "virtual:pwa-register/react";
+import { registerSW } from "virtual:pwa-register";
+
+if ("serviceWorker" in navigator) {
+  // && !/localhost/.test(window.location)) {
+  registerSW({
+    onNeedRefresh() {
+      console.log("onNeedRefresh");
+    },
+    onOfflineReady() {
+      console.log("onOfflineReady");
+    },
+    onRegisterError(error) {
+      console.log("onRegisterError", error);
+    },
+  });
+} else {
+  console.log("browser does not support service worker");
+}
 
 const intervalMS = 60 * 60 * 1000;
 
