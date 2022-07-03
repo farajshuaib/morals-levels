@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { ErrorMessage, Field, Formik } from "formik";
 import { addValueValidationSchema } from "../services/validation";
-import MoralValues from "../models/moralValues";
+import MoralValue from "../models/moralValue";
+import Values from "../models/Values";
 
 const AddValueForm: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState("");
@@ -22,12 +23,18 @@ const AddValueForm: React.FC = () => {
         ActivationValue: "",
       }}
       validationSchema={addValueValidationSchema}
-      onSubmit={(values, { setSubmitting, resetForm }) => {
+      onSubmit={async (values, { setSubmitting, resetForm }) => {
+        setSuccessMessage("");
+        setErrorMessage("");
         try {
-          const moralValues = new MoralValues(values);
-          console.log(moralValues);
+          const moralValues = new MoralValue({
+            ...values,
+            id: new Date().getTime().toString(),
+          });
+          const M_Values = new Values();
+          await M_Values.add(moralValues);
           setSubmitting(false);
-          resetForm()
+          resetForm();
           setSuccessMessage("تم الإضافة بنجاح");
         } catch (e) {
           setSubmitting(false);
@@ -36,7 +43,14 @@ const AddValueForm: React.FC = () => {
         }
       }}
     >
-      {({ values, handleChange, handleBlur, handleReset, handleSubmit }) => (
+      {({
+        values,
+        handleChange,
+        handleBlur,
+        handleReset,
+        handleSubmit,
+        isSubmitting,
+      }) => (
         <div>
           {/* القيمة */}
           <div className="flex items-center justify-between gap-5 my-5">
@@ -51,7 +65,7 @@ const AddValueForm: React.FC = () => {
                 id="ExaggerateValueName"
                 type="text"
                 className="input"
-                require={true}
+                required={true}
                 placeholder="مثلا: تهور"
                 value={values.ExaggerateValueName}
                 onBlur={handleBlur("ExaggerateValueName")}
@@ -73,7 +87,7 @@ const AddValueForm: React.FC = () => {
                 type="text"
                 className="input py-3"
                 placeholder="مثلا: الشجاعة"
-                require={true}
+                required={true}
                 value={values.valueName}
                 onBlur={handleBlur("valueName")}
                 onChange={handleChange("valueName")}
@@ -96,7 +110,7 @@ const AddValueForm: React.FC = () => {
                 id="DerelictionValueName"
                 type="text"
                 className="input"
-                require={true}
+                required={true}
                 placeholder="مثلا: جٌبن"
                 value={values.DerelictionValueName}
                 onBlur={handleBlur("DerelictionValueName")}
@@ -177,7 +191,7 @@ const AddValueForm: React.FC = () => {
                 id={item.name}
                 name={item.name}
                 className="input"
-                require={true}
+                required={true}
                 placeholder={item.placeholder}
                 onBlur={handleBlur(item.name)}
                 onChange={handleChange(item.name)}
@@ -205,7 +219,7 @@ const AddValueForm: React.FC = () => {
             </div>
           )}
           {errorMessage && (
-            <div className="my-5 px-3 py-2 text-lg rounded-lg text-red-600 flex items-cente border border-red-600 bg-red-50">
+            <div className="my-5 px-3 py-2 text-lg rounded-lg text-red-600 flex items-center border border-red-600 bg-red-50">
               <i className="bx bx-error"></i>
               <span>{errorMessage}</span>
             </div>
@@ -214,12 +228,13 @@ const AddValueForm: React.FC = () => {
           <div className="flex my-5 items-center gap-8">
             <button
               type="submit"
+              disabled={isSubmitting}
               onClick={() => {
                 handleSubmit();
               }}
-              className="px-8 py-2 border-2 border-green-700 rounded-lg bg-green-600 text-white"
+              className={`${isSubmitting && "opacity-60"} px-8 py-2 border-2 border-green-600 rounded-lg bg-green-600 text-white`}
             >
-              تأكيد
+              {isSubmitting ? "جاري التحميل..." : "تأكيد"}
             </button>
             <button
               type="button"

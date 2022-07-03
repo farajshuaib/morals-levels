@@ -1,18 +1,5 @@
-interface props {
-  id?: String;
-  valueName: String;
-  ExaggerateValueName: String;
-  DerelictionValueName: String;
-  StandardValue: String;
-  SourcedValue: String;
-  LevelValue: String;
-  LadderValue: String;
-  SchoolValue: String;
-  TypedValue: String;
-  ActivationValue: String;
-}
+import { MoralValue } from "../types";
 
-const localStorageVals = localStorage.getItem("values");
 class MoralValues {
   private id: String = "";
   private valueName: String = "";
@@ -26,11 +13,8 @@ class MoralValues {
   private TypedValue: String = "";
   private ActivationValue: String = "";
 
-  private values: Array<this> = localStorageVals
-    ? JSON.parse(localStorageVals)
-    : [];
-
   constructor({
+    id,
     valueName,
     ExaggerateValueName,
     DerelictionValueName,
@@ -41,8 +25,8 @@ class MoralValues {
     SchoolValue,
     TypedValue,
     ActivationValue,
-  }: props) {
-    this.setId(new Date().getTime().toString());
+  }: MoralValue) {
+    this.setId(id);
     this.setValueName(valueName);
     this.setExaggerateValueName(ExaggerateValueName);
     this.setDerelictionValueName(DerelictionValueName);
@@ -53,31 +37,6 @@ class MoralValues {
     this.setSchoolValue(SchoolValue);
     this.setTypedValue(TypedValue);
     this.setActivauionValue(ActivationValue);
-
-    this.saveValues({
-      id: this.id,
-      valueName,
-      ExaggerateValueName,
-      DerelictionValueName,
-      StandardValue,
-      SourcedValue,
-      LevelValue,
-      LadderValue,
-      SchoolValue,
-      TypedValue,
-      ActivationValue,
-    });
-  }
-
-  private saveValues(values: props) {
-    const prevValues = localStorageVals ? JSON.parse(localStorageVals) : [];
-    const newValues = [...prevValues, values];
-    this.values = newValues;
-    localStorage.setItem("values", JSON.stringify(newValues));
-  }
-
-  public getValues(): Array<this> {
-    return this.values;
   }
 
   public setId(id: String): void {

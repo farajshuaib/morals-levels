@@ -1,4 +1,5 @@
 import AddValueForm from "./AddValueForm";
+import ShowValues from "./showValues";
 
 interface ModalContentProps {
   title: string;
@@ -7,12 +8,12 @@ interface ModalContentProps {
 
 const ModalContent: React.FC<ModalContentProps> = ({ title, description }) => {
   return (
-    <div className="w-full">
+    <section className="w-full">
       <h1 className="text-3xl">{title}</h1>
-      <p className="text-xl text-gray-700 mt-4 tracking-wide leading-relaxed max-h-96 overflow-auto">
+      <div className="text-xl text-gray-700 mt-4 tracking-wide leading-relaxed max-h-96 overflow-auto">
         {description}
-      </p>
-    </div>
+      </div>
+    </section>
   );
 };
 
@@ -133,12 +134,7 @@ export const cards = [
     bg: "bg-slate-500",
     icon: <i className="bx bx-show"></i>,
     modalContent: (
-      <ModalContent
-        title={"القيم الأخلاقية"}
-        description={
-          "لوريم ايبسوم دولار سيت أميت ,كونسيكتيتور أدايبا يسكينج أليايت,سيت دو أيوسمود تيمبور"
-        }
-      />
+      <ModalContent title={"القيم الأخلاقية"} description={<ShowValues />} />
     ),
     id: "showValues",
   },

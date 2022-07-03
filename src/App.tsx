@@ -1,13 +1,19 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Safe from "./components/Safe";
 import SearchForm from "./components/SearchForm";
 import Table from "./components/Table";
 import { cards } from "./components/CardList";
 import Modal from "./components/Modal";
+import Values from "./models/Values";
 
 function App() {
   const [data, setData] = useState<string>();
   const [modalContent, setModalContent] = useState<React.ReactNode>();
+
+  useEffect(() => {
+    const values = new Values();
+    values.getValuesFromStorage();
+  }, []);
 
   return (
     <div className="App">
@@ -62,11 +68,13 @@ function App() {
           className="mx-auto"
         />
         <h6 className="text-center text-transparent bg-opacity-40  bg-clip-text bg-gradient-to-r from-blue-500 to-teal-400 uppercase">
-          <span className="font-bold text-5xl block ">IT - UOT </span>
-          <span className="font-bold text-5xl block ">
+          <span className="font-bold text-2xl sm:text-3xl lg:text-5xl block text-white">
+            IT - UOT{" "}
+          </span>
+          <span className="font-bold text-2xl sm:text-3xl lg:text-5xl block text-white">
             Software engineering
           </span>
-          <span className="font-extrabold  tracking-widest leading-relaxed text-8xl">
+          <span className="font-extrabold tracking-widest leading-relaxed text-3xl sm:text-4xl md:text-5xl lg:text-8xl">
             moralities
           </span>
         </h6>
