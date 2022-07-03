@@ -53,16 +53,16 @@ function App() {
         {/*  cards  */}
         <section
           id="cards"
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-8 md:gap-12"
+          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-8 md:gap-12 lg:gap-16"
         >
           {cards.map((item, index) => (
             <button
               key={index}
               id={item.id}
               onClick={() => setModalContent(item.modalContent)}
-              className={`${item.bg} p-8 md:p-16 rounded-md shadow-sm hover:shadow-2xl transition-all duration-150 transform hover:scale-105 flex items-start justify-center text-lg md:text-2xl text-white font-medium`}
+              className={`${item.bg} p-8 md:p-16 rounded-md shadow-sm hover:shadow-2xl transition-all duration-150 transform hover:scale-105 flex flex-wrap-reverse lg:flex-nowrap items-start justify-center text-lg sm:text-xl md:text-2xl text-white font-medium`}
             >
-              <h3 className="mx-1">{item.title}</h3>
+              <h3 className="mx-1 w-full">{item.title}</h3>
               <span className="text-4xl">{item.icon}</span>
             </button>
           ))}

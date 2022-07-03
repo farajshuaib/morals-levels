@@ -28,6 +28,7 @@ const SearchForm: React.FC<props> = ({  setData }) => {
       <button
         type="submit"
         onClick={handleSearchSubmit}
+        aria-label="search"
         className="bg-blue-500 text-white text-3xl px-5 py-3 rounded-l-lg flex item-center justify-center"
       >
         <i className="bx bx-search"></i>
