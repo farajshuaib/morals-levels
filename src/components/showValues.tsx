@@ -19,8 +19,6 @@ const showValues: React.FC = () => {
     getData();
   }, []);
 
-  console.log(values);
-
   if (loading) {
     return (
       <div className="flex items-start justify-center h-full w-full text-primary">
@@ -29,14 +27,22 @@ const showValues: React.FC = () => {
     );
   }
 
+  // الفضيلة
+
   return (
     <div>
       <Safe data={values}>
-        <Table th={["id", "القيمة", ""]}>
+        <Table th={["id", "التقصير", "القيمة", "المبالغة", ""]}>
           {values.map((item, index) => (
             <tr key={index} className="border-b border-gray-50 even:bg-gray-50">
               <td className="px-6 py-3 whitespace-nowrap">{index + 1}</td>
+              <td className="px-6 py-3 whitespace-nowrap">
+                {item.DerelictionValueName}
+              </td>
               <td className="px-6 py-3 whitespace-nowrap">{item.valueName}</td>
+              <td className="px-6 py-3 whitespace-nowrap">
+                {item.ExaggerateValueName}
+              </td>
               <td className="px-6 py-3 whitespace-nowrap">
                 <div>
                   <button className="px-5 py-2 text-sm bg-primary rounded-lg text-white">

@@ -1,16 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { MoralValue } from "../types";
 
 interface props {
-  setData: (val:string) => void;
+  values: MoralValue[];
+  setData: (val: MoralValue[]) => void;
 }
 
-const SearchForm: React.FC<props> = ({  setData }) => {
+const SearchForm: React.FC<props> = ({ values, setData }) => {
   const [searchValue, setSearchValue] = useState<string>("");
 
   const handleSearchSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     // now should set data values
   };
+
+  useEffect(() => {
+    setData(
+      values.filter(
+        (item: MoralValue) =>
+          item.valueName.match(searchValue) ||
+          item.ActivationValue.match(searchValue) ||
+          item.DerelictionValueName.match(searchValue) ||
+          item.ExaggerateValueName.match(searchValue) ||
+          item.LadderValue.match(searchValue) ||
+          item.LevelValue.match(searchValue) ||
+          item.SchoolValue.match(searchValue) ||
+          item.StandardValue.match(searchValue) ||
+          item.TypedValue.match(searchValue) ||
+          item.SourcedValue.match(searchValue)
+      )
+    );
+  }, [searchValue]);
   return (
     <form
       onSubmit={handleSearchSubmit}

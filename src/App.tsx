@@ -1,11 +1,9 @@
 import { useState } from "react";
-import Safe from "./components/Safe";
-import SearchForm from "./components/SearchForm";
-import Table from "./components/Table";
 import { cards } from "./components/CardList";
 import Modal from "./components/Modal";
 import { useRegisterSW } from "virtual:pwa-register/react";
 import { registerSW } from "virtual:pwa-register";
+import DataValuesSection from "./components/DataValuesSection";
 
 if ("serviceWorker" in navigator) {
   // && !/localhost/.test(window.location)) {
@@ -27,7 +25,7 @@ if ("serviceWorker" in navigator) {
 const intervalMS = 60 * 60 * 1000;
 
 function App() {
-  const [data, setData] = useState<string>();
+  
   const [modalContent, setModalContent] = useState<React.ReactNode>();
 
   useRegisterSW({
@@ -53,7 +51,7 @@ function App() {
         {/*  cards  */}
         <section
           id="cards"
-          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-8 md:gap-12 lg:gap-16"
+          className="grid items-center justify-center grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-8 md:gap-12 lg:gap-16"
         >
           {cards.map((item, index) => (
             <button
@@ -71,17 +69,7 @@ function App() {
         {/* divider */}
         <span className="block w-3/4 mx-auto h-1 bg-slate-100 my-12 rounded-lg"></span>
 
-        {/* search form */}
-        <SearchForm setData={(value: string) => setData(value)} />
-
-        {/* search result */}
-        <Safe data={data}>
-          <Table th={[""]}>
-            <tr>
-              <td></td>
-            </tr>
-          </Table>
-        </Safe>
+        <DataValuesSection />
       </main>
 
       <footer className="bg-gray-800 p-8">

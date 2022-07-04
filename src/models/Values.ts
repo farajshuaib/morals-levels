@@ -1,6 +1,5 @@
 import { MoralValue } from "./../types/index";
 import { toast } from "react-toastify";
-import MoralValues from "./moralValue";
 import {
   collection,
   getDocs,
@@ -49,7 +48,7 @@ class Values {
       }
     });
   }
-  public async update(value: MoralValues, id: String) {
+  public async update(value: MoralValue, id: String) {
     return new Promise<void>(async (resolve, reject) => {
       try {
         const docRef = doc(db, "values");
@@ -57,7 +56,7 @@ class Values {
         // getDoc();
         await updateDoc(docRef, { ...value });
         this.values = this.values.map((moral: MoralValue) => {
-          if (moral.id == value.getId()) {
+          if (moral.id == value.id) {
             return value;
           } else {
             return moral;

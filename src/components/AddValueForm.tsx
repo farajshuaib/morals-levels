@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { ErrorMessage, Field, Formik } from "formik";
 import { addValueValidationSchema } from "../services/validation";
-import MoralValue from "../models/moralValue";
 import Values from "../models/Values";
 
-import { MoralValue as MoralValueType } from "../types";
+import { MoralValue  } from "../types";
 
 const AddValueForm: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState("");
@@ -29,12 +28,11 @@ const AddValueForm: React.FC = () => {
         setSuccessMessage("");
         setErrorMessage("");
         try {
-          const moralValues = new MoralValue({
+          const M_Values = new Values();
+          await M_Values.add({
             ...values,
             id: new Date().getTime().toString(),
-          });
-          const M_Values = new Values();
-          await M_Values.add({ ...moralValues } as MoralValueType);
+          } as MoralValue);
           setSubmitting(false);
           resetForm();
           setSuccessMessage("تم الإضافة بنجاح");

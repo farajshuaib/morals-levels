@@ -172,7 +172,7 @@ export const cards = [
   },
   {
     title: "إضافة قيمة ",
-    bg: "bg-gray-600",
+    bg: "bg-gray-600 col-span-2",
     icon: <i className="bx bx-plus-circle"></i>,
     modalContent: (
       <ModalContent
@@ -182,13 +182,13 @@ export const cards = [
     ),
     id: "addValue",
   },
-  {
-    title: "عرض قائمة القيم",
-    bg: "bg-slate-500",
-    icon: <i className="bx bx-show"></i>,
-    modalContent: (
-      <ModalContent title={"القيم الأخلاقية"} description={<ShowValues />} />
-    ),
-    id: "showValues",
-  },
+  // {
+  //   title: "عرض قائمة القيم",
+  //   bg: "bg-slate-500",
+  //   icon: <i className="bx bx-show"></i>,
+  //   modalContent: (
+  //     <ModalContent title={"القيم الأخلاقية"} description={<ShowValues />} />
+  //   ),
+  //   id: "showValues",
+  // },
 ];
