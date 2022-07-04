@@ -1,4 +1,4 @@
-import { MoralValue } from './../types/index';
+import { MoralValue } from "./../types/index";
 import { toast } from "react-toastify";
 import MoralValues from "./moralValue";
 import {
@@ -10,7 +10,7 @@ import {
   query,
   getDoc,
   doc,
-  deleteDoc
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 
@@ -23,7 +23,6 @@ class Values {
       const valuesList = valuesSnapshot.docs.map((doc) =>
         doc.data()
       ) as MoralValue[];
-      console.log("valuesList", valuesList);
       this.values = valuesList;
     } catch (e) {
       console.error("error", e);
@@ -32,9 +31,7 @@ class Values {
 
   public async delete(id: string) {
     // filter out deleted user and save
-    this.values = this.values.filter(
-      (moral: MoralValue) => moral.id !== id
-    );
+    this.values = this.values.filter((moral: MoralValue) => moral.id !== id);
   }
 
   public add(value: MoralValue) {
@@ -65,7 +62,7 @@ class Values {
           } else {
             return moral;
           }
-        });
+        }) as MoralValue[];
         resolve();
       } catch (e) {
         console.error("error", e);
