@@ -160,7 +160,7 @@ const AddValueForm: React.FC = () => {
               values: ["الحرب", "التواصل", "التعايش", "الأساس"],
             },
             {
-              label: "سلم القيم",
+              label: "سلم السعادة",
               name: "LadderValue",
               placeholder: "",
               values: ["العقل", "القلب", "الجوارح"],
