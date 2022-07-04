@@ -4,6 +4,8 @@ import { addValueValidationSchema } from "../services/validation";
 import MoralValue from "../models/moralValue";
 import Values from "../models/Values";
 
+import { MoralValue as MoralValueType } from "../types";
+
 const AddValueForm: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -32,7 +34,7 @@ const AddValueForm: React.FC = () => {
             id: new Date().getTime().toString(),
           });
           const M_Values = new Values();
-          await M_Values.add(moralValues);
+          await M_Values.add({ ...moralValues } as MoralValueType);
           setSubmitting(false);
           resetForm();
           setSuccessMessage("تم الإضافة بنجاح");
@@ -232,7 +234,9 @@ const AddValueForm: React.FC = () => {
               onClick={() => {
                 handleSubmit();
               }}
-              className={`${isSubmitting && "opacity-60"} px-8 py-2 border-2 border-green-600 rounded-lg bg-green-600 text-white`}
+              className={`${
+                isSubmitting && "opacity-60"
+              } px-8 py-2 border-2 border-green-600 rounded-lg bg-green-600 text-white`}
             >
               {isSubmitting ? "جاري التحميل..." : "تأكيد"}
             </button>
