@@ -41,7 +41,6 @@ const DataValuesSection = () => {
       <Safe data={data}>
         <Table
           th={[
-            "id",
             "التقصير",
             "القيمة",
             "المبالغة",
@@ -56,7 +55,6 @@ const DataValuesSection = () => {
         >
           {data.map((item, index) => (
             <tr key={index} className="border-b border-gray-50 even:bg-gray-50">
-              <td className="px-6 py-3 whitespace-nowrap">{index + 1}</td>
               <td className="px-6 py-3 whitespace-nowrap">
                 {item.DerelictionValueName}
               </td>
