@@ -1,3 +1,4 @@
+import { MoralValue } from './../types/index';
 import { toast } from "react-toastify";
 import MoralValues from "./moralValue";
 import {
@@ -14,14 +15,14 @@ import {
 import { db } from "../firebase/config";
 
 class Values {
-  private values: Array<MoralValues> = [];
+  private values: MoralValue[] = [];
 
   public async getValuesFromStorage() {
     try {
       const valuesSnapshot = await getDocs(collection(db, "values"));
       const valuesList = valuesSnapshot.docs.map((doc) =>
         doc.data()
-      ) as MoralValues[];
+      ) as MoralValue[];
       console.log("valuesList", valuesList);
       this.values = valuesList;
     } catch (e) {
@@ -32,11 +33,11 @@ class Values {
   public async delete(id: string) {
     // filter out deleted user and save
     this.values = this.values.filter(
-      (moral: MoralValues) => moral.getId() !== id
+      (moral: MoralValue) => moral.id !== id
     );
   }
 
-  public add(value: MoralValues) {
+  public add(value: MoralValue) {
     return new Promise<void>(async (resolve, reject) => {
       try {
         await addDoc(collection(db, "values"), { ...value });
@@ -58,8 +59,8 @@ class Values {
 
         // getDoc();
         await updateDoc(docRef, { ...value });
-        this.values = this.values.map((moral: MoralValues) => {
-          if (moral.getId() == value.getId()) {
+        this.values = this.values.map((moral: MoralValue) => {
+          if (moral.id == value.getId()) {
             return value;
           } else {
             return moral;
@@ -79,10 +80,10 @@ class Values {
   public async getById(id: string) {
     const docRef = doc(db, "values");
     const document = await getDoc(docRef);
-    return this.values.find((value) => value.getId() == id);
+    return this.values.find((value) => value.id == id);
   }
 
-  public getValues(): Array<MoralValues> {
+  public getValues(): Array<MoralValue> {
     return this.values;
   }
 }
