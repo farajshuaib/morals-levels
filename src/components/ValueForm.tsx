@@ -1,41 +1,53 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ErrorMessage, Field, Formik } from "formik";
 import { addValueValidationSchema } from "../services/validation";
-import Values from "../models/Values";
+import { useStoreActions } from "easy-peasy";
+import { MoralData, MoralValue } from "../types";
 
-import { MoralValue  } from "../types";
-
-const AddValueForm: React.FC = () => {
+interface props {
+  editItem?: MoralValue;
+}
+const ValueForm: React.FC<props> = ({ editItem }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const addValue = useStoreActions<any>((actions) => actions.morals.addValue);
+  const updateValue = useStoreActions<any>(
+    (actions) => actions.morals.updateValue
+  );
+  const [initialValues, setInitialValues] = useState<MoralData>({
+    valueName: "",
+    ExaggerateValueName: "",
+    DerelictionValueName: "",
+    StandardValue: "",
+    SourcedValue: "",
+    LevelValue: "",
+    LadderValue: "",
+    SchoolValue: "",
+    TypedValue: "",
+    ActivationValue: "",
+  });
+
+  useEffect(() => {
+    if (editItem) {
+      setInitialValues(editItem.data);
+    }
+  }, [editItem]);
 
   return (
     <Formik
-      initialValues={{
-        valueName: "",
-        ExaggerateValueName: "",
-        DerelictionValueName: "",
-        StandardValue: "",
-        SourcedValue: "",
-        LevelValue: "",
-        LadderValue: "",
-        SchoolValue: "",
-        TypedValue: "",
-        ActivationValue: "",
-      }}
+      initialValues={initialValues}
       validationSchema={addValueValidationSchema}
+      enableReinitialize
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         setSuccessMessage("");
         setErrorMessage("");
         try {
-          const M_Values = new Values();
-          await M_Values.add({
-            ...values,
-            id: new Date().getTime().toString(),
-          } as MoralValue);
+          editItem
+            ? await updateValue({ id: editItem?.id, data: values })
+            : await addValue(values);
           setSubmitting(false);
           resetForm();
-          setSuccessMessage("تم الإضافة بنجاح");
+          setSuccessMessage(editItem ? "تم التعديل بنجاح" : "تم الإضافة بنجاح");
         } catch (e) {
           setSubmitting(false);
           setErrorMessage("حدث خطأ ما الرجاء الاتصال بالدعم الفني");
@@ -254,4 +266,4 @@ const AddValueForm: React.FC = () => {
   );
 };
 
-export default AddValueForm;
+export default ValueForm;

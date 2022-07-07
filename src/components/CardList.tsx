@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import AddValueForm from "./AddValueForm";
-import ShowValues from "./showValues";
+import ValueForm from "./ValueForm";
 
 interface ModalContentProps {
   title: string;
@@ -172,12 +171,12 @@ export const cards = [
   },
   {
     title: "إضافة قيمة ",
-    bg: "bg-gray-600 col-span-2",
+    bg: "bg-gray-600 md:col-span-2",
     icon: <i className="bx bx-plus-circle"></i>,
     modalContent: (
       <ModalContent
         title={"إضافة قيمة اخلاقية"}
-        description={<AddValueForm />}
+        description={<ValueForm />}
       />
     ),
     id: "addValue",

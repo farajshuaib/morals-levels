@@ -1,25 +1,35 @@
 import React, { useEffect, useState } from "react";
-import Values from "../models/Values";
 import { MoralValue } from "../types";
-import Safe from "./Safe";
+import Safe from "./utils/Safe";
 import SearchForm from "./SearchForm";
-import Table from "./Table";
+import Table from "./utils/Table";
+import { useStoreActions, useStoreState } from "easy-peasy";
 
-const DataValuesSection = () => {
-  const [values, setValues] = useState<MoralValue[]>([]);
+interface props {
+  setDeleteItem: (data: MoralValue) => void;
+  setEditItem: (data: MoralValue) => void;
+}
+
+const DataValuesSection: React.FC<props> = ({ setDeleteItem, setEditItem }) => {
   const [data, setData] = useState<MoralValue[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const getValues = useStoreActions<any>((actions) => actions.morals.getValues);
+  const values: MoralValue[] = useStoreState<any>(
+    (state) => state.morals.get_values
+  );
 
   const getData = async () => {
-    const valuesInstance = new Values();
-    await valuesInstance.getValuesFromStorage();
-    setValues(valuesInstance.getValues());
+    await getValues();
     setLoading(false);
   };
 
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    setData(values);
+  }, [values]);
 
   if (loading) {
     return (
@@ -51,33 +61,51 @@ const DataValuesSection = () => {
             "مدرسة القيم",
             "نوع قيم",
             "وقع القيمة",
+            "",
           ]}
         >
-          {data.map((item, index) => (
-            <tr key={index} className="border-b border-gray-50 even:bg-gray-50">
+          {data.map((item) => (
+            <tr
+              key={item.id}
+              className="border-b border-gray-50 even:bg-gray-50 text-gray-900"
+            >
               <td className="px-6 py-3 whitespace-nowrap">
-                {item.DerelictionValueName}
+                {item.data.DerelictionValueName}
               </td>
-              <td className="px-6 py-3 whitespace-nowrap">{item.valueName}</td>
-              <td className="px-6 py-3 whitespace-nowrap">
-                {item.ExaggerateValueName}
-              </td>
-              <td className="px-6 py-3 whitespace-nowrap">
-                {item.StandardValue}
-              </td>
-              <td className="px-6 py-3 whitespace-nowrap">
-                {item.SourcedValue}
-              </td>
-              <td className="px-6 py-3 whitespace-nowrap">{item.LevelValue}</td>
-              <td className="px-6 py-3 whitespace-nowrap">
-                {item.LadderValue}
+              <td className="px-6 py-3 whitespace-nowrap font-bold">
+                {item.data.valueName}
               </td>
               <td className="px-6 py-3 whitespace-nowrap">
-                {item.SchoolValue}
+                {item.data.ExaggerateValueName}
               </td>
-              <td className="px-6 py-3 whitespace-nowrap">{item.TypedValue}</td>
               <td className="px-6 py-3 whitespace-nowrap">
-                {item.ActivationValue}
+                {item.data.StandardValue}
+              </td>
+              <td className="px-6 py-3 whitespace-nowrap">
+                {item.data.SourcedValue}
+              </td>
+              <td className="px-6 py-3 whitespace-nowrap">
+                {item.data.LevelValue}
+              </td>
+              <td className="px-6 py-3 whitespace-nowrap">
+                {item.data.LadderValue}
+              </td>
+              <td className="px-6 py-3 whitespace-nowrap">
+                {item.data.SchoolValue}
+              </td>
+              <td className="px-6 py-3 whitespace-nowrap">
+                {item.data.TypedValue}
+              </td>
+              <td className="px-6 py-3 whitespace-nowrap">
+                {item.data.ActivationValue}
+              </td>
+              <td className="px-6 py-3 whitespace-nowrap flex items-center gap-5  text-2xl">
+                <button onClick={() => setDeleteItem(item)}>
+                  <i className="bx bx-trash-alt text-red-600"></i>
+                </button>
+                <button onClick={() => setEditItem(item)}>
+                  <i className="bx bxs-edit text-green-500"></i>
+                </button>
               </td>
             </tr>
           ))}
