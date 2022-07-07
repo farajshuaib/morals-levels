@@ -5,6 +5,7 @@ import { loginSchema } from "../services/validation";
 // import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import banner from "../assets/Banner.jpeg";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,17 +21,18 @@ const Login = () => {
         validationSchema={loginSchema}
         onSubmit={async (values, { setSubmitting }) => {
           setError("");
-          try {
-            setSubmitting(false);
-            navigate("/");
-          } catch (err: any) {
-            if (err.response && err.response.data?.error) {
-              setError(err.response.data.error);
-            } else {
-              setError("حدث خطأ ما الرجاء إعادة المحاولة لاحقا");
-            }
-            setSubmitting(false);
-          }
+          const auth = getAuth();
+          signInWithEmailAndPassword(auth, values.email, values.password)
+            .then((userCredential) => {
+              // Signed in
+              const user = userCredential.user;
+              setSubmitting(false);
+              navigate("/");
+            })
+            .catch((error) => {
+              setError(error.message);
+              setSubmitting(false);
+            });
         }}
       >
         {({
@@ -48,7 +50,7 @@ const Login = () => {
               <Form>
                 <div className="my-5">
                   <label htmlFor="email" className="input-lable">
-                    اسم المستخدم
+                    البريد الالكتروني
                   </label>
                   <input
                     required
@@ -104,6 +106,16 @@ const Login = () => {
                   )}
                 </button>
               </Form>
+              <div className="mt-8 flex items-center text-center justify-center text-gray700 text-sm">
+                <p> لا تملك حساب؟</p>
+                <button
+                  type="button"
+                  className="font-bold mx-1 underline"
+                  onClick={() => navigate("/sign-up")}
+                >
+                  انشاء حساب جديد
+                </button>
+              </div>
             </div>
             <img
               alt=""

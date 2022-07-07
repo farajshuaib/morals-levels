@@ -39,6 +39,7 @@ const Modal: React.FC<props> = ({ close, isVisible, children }) => {
             animate="animate"
             exit="exit"
             transition={{ duration: 0.3 }}
+            className="w-full h-full  flex justify-center items-center"
           >
             {children}
           </motion.div>

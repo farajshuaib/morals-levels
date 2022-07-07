@@ -7,6 +7,7 @@ import { MoralValue } from "../types";
 import DeleteModal from "../components/utils/DeleteModal";
 import ValueForm from "../components/ValueForm";
 import { useStoreActions } from "easy-peasy";
+import NavBar from "../components/utils/NavBar";
 
 const Home = () => {
   const [modalContent, setModalContent] = useState<React.ReactNode>();
@@ -16,12 +17,8 @@ const Home = () => {
   );
 
   return (
-    <div className="App">
-      <nav className=" bg-primary">
-        <div className="container mx-auto p-5 md:p-8">
-          <h1 className="text-3xl text-white font-bold">القيم الأخلاقية</h1>
-        </div>
-      </nav>
+    <div className="Home">
+      <NavBar />
 
       <main className="container mx-auto px-5 md:px-8 py-12">
         {/*  cards  */}
@@ -76,7 +73,7 @@ const Home = () => {
       </footer>
 
       <Modal isVisible={!!modalContent} close={() => setModalContent(null)}>
-        <div className="bg-white w-full p-8 rounded-lg relative max-h-96 overflow-auto">
+        <div className="bg-white w-full md:w-1/2 p-8 rounded-lg relative max-h-3/4 overflow-auto">
           <button
             className="float-left bg-light-opacity rounded-full h-8 w-8 flex items-center justify-center"
             onClick={() => setModalContent(null)}

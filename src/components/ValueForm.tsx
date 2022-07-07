@@ -69,7 +69,7 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
             <div>
               <label
                 htmlFor="ExaggerateValueName"
-                className="text-center block"
+                className="text-center block input-lable"
               >
                 المبالغة
               </label>
@@ -91,7 +91,7 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
             </div>
 
             <div className="flex-1">
-              <label htmlFor="valueName" className="text-center block">
+              <label htmlFor="valueName" className="text-center block input-lable">
                 القيمة
               </label>
               <Field
@@ -114,7 +114,7 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
             <div>
               <label
                 htmlFor="DerelictionValueName"
-                className="text-center block"
+                className="text-center block input-lable"
               >
                 التقصير
               </label>
@@ -195,7 +195,7 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
             },
           ].map((item, index) => (
             <div key={index} className="my-5 w-full">
-              <label htmlFor={item.name} className="">
+              <label htmlFor={item.name} className="input-lable">
                 {item.label}
               </label>
               <Field
