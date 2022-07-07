@@ -35,7 +35,7 @@ const SignUp: React.FC = () => {
               try {
                 await addStudent({
                   id: user.uid,
-                  email: values.name,
+                  email: values.email,
                   name: values.name,
                   student_id: values.student_id,
                   status: values.status,

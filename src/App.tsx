@@ -13,15 +13,18 @@ const App: React.FC = () => {
     (actions) => actions.userData.setUserData
   );
 
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setUserData(user);
-      setLoading(false);
-    } else {
-      setLoading(false);
-    }
-  });
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserData(user);
+        setLoading(false);
+      } else {
+        setUserData(null);
+        setLoading(false);
+      }
+    });
+  }, []);
 
   if (loading) {
     return <LoadingScreen />;

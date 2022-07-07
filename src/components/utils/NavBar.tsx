@@ -4,15 +4,21 @@ import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen";
 import { toast } from "react-toastify";
+import { useStoreActions } from "easy-peasy";
 
 const NavBar: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const setUserData = useStoreActions<any>(
+    (actions) => actions.userData.setUserData
+  );
+
 
   const logout = async () => {
     try {
       const auth = getAuth();
       auth.signOut();
+      setUserData(null);
       navigate("/");
     } catch (err: any) {
       setLoading(false);

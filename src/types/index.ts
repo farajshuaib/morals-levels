@@ -32,21 +32,19 @@ export interface MoralsModel {
   get_values: Computed<MoralsModel, MoralValue[]>;
 }
 
-
-export interface userData {
-
-}
+export interface userData {}
 export interface UserDataModel {
   data: userData | null;
   setUserData: Action<UserDataModel, userData>;
   get: Computed<UserDataModel, userData | null>;
 }
 
+export type userStatus = "approved" | "rejected" | "waiting" | "suspended";
 export interface StudentData {
   name: string;
   email: string;
   student_id: string;
-  status: "approved" | "rejected" | "waiting" | "suspended";
+  status: userStatus;
 }
 
 export interface Student {

@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import LoadingScreen from "../components/utils/LoadingScreen";
 import NavBar from "../components/utils/NavBar";
-import { Student } from "../types";
+import { Student, userStatus } from "../types";
 
 import Table from "../components/utils/Table";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import Safe from "../components/utils/Safe";
-import Modal from "../components/utils/Modal";
 import StudentForm from "../components/StudentForm";
 import DeleteModal from "../components/utils/DeleteModal";
+import { toast } from "react-toastify";
 
 const Students: React.FC = () => {
-  const [modalContent, setModalContent] = useState<React.ReactNode>();
   const [deleteItem, setDeleteItem] = useState<Student | null>();
 
   const [data, setData] = useState<Student[]>([]);
@@ -22,8 +21,8 @@ const Students: React.FC = () => {
   const Student: Student[] = useStoreState<any>(
     (state) => state.students.get_students
   );
-  const deleteStudent = useStoreActions<any>(
-    (actions) => actions.morals.deleteStudent
+  const updateStudent = useStoreActions<any>(
+    (actions) => actions.students.updateStudent
   );
 
   const getData = async () => {
@@ -39,6 +38,18 @@ const Students: React.FC = () => {
     setData(Student);
   }, [Student]);
 
+  const setUserStatus = async (student: Student, status: userStatus) => {
+    try {
+      setLoading(true);
+      await updateStudent({ ...student, data: { ...student.data, status } });
+      toast.success("تم تحديث حالة الطالب بنجاح");
+      setLoading(false);
+    } catch (err) {
+      toast.error("حدث خطأ ما الرجاء اعاةدة المحاولة او الاتصال بالدعم");
+      setLoading(false);
+    }
+  };
+
   if (loading) {
     return <LoadingScreen />;
   }
@@ -50,18 +61,10 @@ const Students: React.FC = () => {
       <main className="container mx-auto px-5 md:px-8 py-12">
         <div className="flex items-center justify-between my-5">
           <h1 className="text-2xl text-gray-800">الطلبة المسجلين </h1>
-          <button
-            onClick={() => {
-              setModalContent(<StudentForm />);
-            }}
-            className="btn btn-primary"
-          >
-            اضافة طالب
-          </button>
         </div>
 
         <Safe data={data}>
-          <Table th={["رقم القيد", "الاسم", "البريد الالكتروني", ""]}>
+          <Table th={["رقم القيد", "الاسم", "البريد الالكتروني", "الحالة", ""]}>
             {data.map((item) => (
               <tr
                 key={item.id}
@@ -76,17 +79,51 @@ const Students: React.FC = () => {
                 <td className="px-6 py-3 whitespace-nowrap">
                   {item.data.email}
                 </td>
+                <td className="px-6 py-3 whitespace-nowrap">
+                  {item.data.status || "unknown"}
+                </td>
                 <td className="px-6 py-3 whitespace-nowrap flex items-center gap-5  text-2xl">
-                  <button onClick={() => setDeleteItem(item)}>
-                    <i className="bx bx-trash-alt text-red-600"></i>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setModalContent(<StudentForm editItem={item} />);
-                    }}
-                  >
-                    <i className="bx bxs-edit text-green-500"></i>
-                  </button>
+                  {item.data.status === "waiting" && (
+                    <>
+                      <button
+                        className="btn-primary bg-green-600"
+                        onClick={() => {
+                          setUserStatus(item, "approved");
+                        }}
+                      >
+                        <span className="text-sm">الموافقة</span>
+                      </button>
+                      <button
+                        className="btn-primary bg-red-600"
+                        onClick={() => {
+                          setUserStatus(item, "rejected");
+                        }}
+                      >
+                        <span className="text-sm">رفض</span>
+                      </button>
+                    </>
+                  )}
+                  {item.data.status === "approved" && (
+                    <button
+                      className="btn-primary bg-red-600"
+                      onClick={() => {
+                        setUserStatus(item, "suspended");
+                      }}
+                    >
+                      <span className="text-sm">ايقاف</span>
+                    </button>
+                  )}
+                  {item.data.status === "rejected" ||
+                    (item.data.status === "suspended" && (
+                      <button
+                        className="btn-primary "
+                        onClick={() => {
+                          setUserStatus(item, "approved");
+                        }}
+                      >
+                        <span className="text-sm">اعادة تفعيل</span>
+                      </button>
+                    ))}
                 </td>
               </tr>
             ))}
@@ -94,27 +131,14 @@ const Students: React.FC = () => {
         </Safe>
       </main>
 
-      <Modal isVisible={!!modalContent} close={() => setModalContent(null)}>
-        <div className="bg-white w-full md:w-1/2 p-8 rounded-lg relative overflow-auto">
-          <button
-            className="float-left bg-light-opacity rounded-full h-8 w-8 flex items-center justify-center"
-            onClick={() => setModalContent(null)}
-          >
-            <i className="bx bx-x text-4xl "></i>
-          </button>
-          <div className="clear-both"></div>
-          {modalContent}
-        </div>
-      </Modal>
-
-      <DeleteModal
+      {/* <DeleteModal
         visible={!!deleteItem}
         hide={() => setDeleteItem(null)}
         submit={async () => {
           await deleteStudent(deleteItem?.id);
           setDeleteItem(null);
         }}
-      />
+      /> */}
     </div>
   );
 };
