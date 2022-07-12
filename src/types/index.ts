@@ -32,14 +32,15 @@ export interface MoralsModel {
   get_values: Computed<MoralsModel, MoralValue[]>;
 }
 
-export interface userData {}
+export type userStatus = "approved" | "rejected" | "waiting" | "suspended";
+
+
 export interface UserDataModel {
-  data: userData | null;
-  setUserData: Action<UserDataModel, userData>;
-  get: Computed<UserDataModel, userData | null>;
+  data: Student | null;
+  setUserData: Action<UserDataModel, Student>;
+  get: Computed<UserDataModel, Student | null>;
 }
 
-export type userStatus = "approved" | "rejected" | "waiting" | "suspended";
 export interface StudentData {
   name: string;
   email: string;
@@ -54,14 +55,14 @@ export interface Student {
 
 export interface StudentModel {
   students: Student[];
-  setStudents: Action<MoralsModel, Student[]>;
-  getStudents: Thunk<MoralsModel, Student>;
-  addStudentToList: Action<MoralsModel, Student>;
-  addStudent: Thunk<MoralsModel, Student>;
-  removeStudent: Action<MoralsModel, string>;
-  deleteStudent: Thunk<MoralsModel, string>;
-  updateStudent: Thunk<MoralsModel, Student>;
-  setStudent: Action<MoralsModel, Student>;
-  getStudentById: Thunk<MoralsModel, string>;
-  get_students: Computed<MoralsModel, Student[]>;
+  setStudents: Action<StudentModel, Student[]>;
+  getStudents: Thunk<StudentModel, Student>;
+  addStudentToList: Action<StudentModel, Student>;
+  addStudent: Thunk<StudentModel, Student>;
+  removeStudent: Action<StudentModel, string>;
+  deleteStudent: Thunk<StudentModel, string>;
+  updateStudent: Thunk<StudentModel, Student>;
+  setStudent: Action<StudentModel, Student>;
+  getStudentById: Thunk<StudentModel, string>;
+  get_students: Computed<StudentModel, Student[]>;
 }

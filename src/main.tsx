@@ -41,6 +41,7 @@ const Wrapper: React.FC = () => {
   return (
     <React.StrictMode>
       <BrowserRouter>
+        {/*  @ts-ignore: Unreachable code error */}
         <StoreProvider store={store}>
           <App />
           <ToastContainer />

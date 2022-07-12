@@ -6,10 +6,45 @@ import { loginSchema } from "../services/validation";
 import { useNavigate } from "react-router-dom";
 import banner from "../assets/Banner.jpeg";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useStoreActions } from "easy-peasy";
+import { getStudentByEmail } from "../services/studentsCRUD";
+import { toast } from "react-toastify";
+import { Student, userStatus } from "../types";
 
-const Login = () => {
+
+const notifyDataUpdate = (status: userStatus) => {
+  switch (status) {
+    case "approved": {
+      toast.success("تم تسجيل الدخول بنجاح");
+      break;
+    }
+    case "rejected": {
+      toast.error("لا يمكنك تسجيل الدخول، تم رفضك من قبل استاذ المادة");
+      break;
+    }
+    case "suspended": {
+      toast.error("لا يمكنك تسجيل الدخول، تم ايقاف حسابك من قبل استاذ المادة");
+      break;
+    }
+    case "waiting": {
+      toast.error(
+        "لا يمكنك تسجيل الدخول، لم يتم قبولك بعد من قبل استاذ المادة"
+      );
+      break;
+    }
+    default: {
+    }
+  }
+};
+
+
+
+const Login: React.FC = () => {
   const navigate = useNavigate();
   const [error, setError] = useState<string>("");
+  const setUserData = useStoreActions<any>(
+    (actions) => actions.userData.setUserData
+  );
 
   return (
     <div
@@ -23,11 +58,26 @@ const Login = () => {
           setError("");
           const auth = getAuth();
           signInWithEmailAndPassword(auth, values.email, values.password)
-            .then((userCredential) => {
+            .then(async (userCredential) => {
               // Signed in
               const user = userCredential.user;
-              setSubmitting(false);
-              navigate("/");
+              console.log("user", user);
+              if (!user.email) {
+                setError("المستخدم غير موجود");
+                return;
+              }
+              try {
+                const userData = await getStudentByEmail(user.email) as Student;
+                if (userData) {
+                  setUserData(userData);
+                  notifyDataUpdate(userData.data.status);
+                } else {
+                  setError("المستخدم غير موجود");
+                }
+                setSubmitting(false);
+              } catch (err) {
+                setError("حدث خطأ ما الرجاء الاتصال بالدعم الفني");
+              }
             })
             .catch((error) => {
               setError(error.message);
@@ -91,7 +141,12 @@ const Login = () => {
                   )}
                 </div>
 
-                {!!error && <p className="error-alert">{error}</p>}
+                {error && (
+                  <div className="my-5 px-3 py-2 text-lg rounded-lg text-red-600 flex items-center border border-red-600 bg-red-50">
+                    <i className="bx bx-error"></i>
+                    <span>{error}</span>
+                  </div>
+                )}
 
                 <button
                   onClick={() => handleSubmit()}

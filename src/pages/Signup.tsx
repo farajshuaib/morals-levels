@@ -10,6 +10,7 @@ import { useStoreActions } from "easy-peasy";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
+  const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState<string>("");
   const addStudent = useStoreActions<any>(
     (actions) => actions.students.addStudent
@@ -41,7 +42,9 @@ const SignUp: React.FC = () => {
                   status: values.status,
                 });
                 setSubmitting(false);
-                navigate("/");
+                setSuccessMessage(
+                  "تم التسجيل بنجاح، الرجاء الانتظار لحين قبولك من قبل استاذ المادة"
+                );
               } catch (e) {
                 setError("حدث خطأ ما الرجاء الاتصال بالدعم الفني");
               }
@@ -117,6 +120,13 @@ const SignUp: React.FC = () => {
                   <div className="my-5 px-3 py-2 text-lg rounded-lg text-red-600 flex items-center border border-red-600 bg-red-50">
                     <i className="bx bx-error"></i>
                     <span>{error}</span>
+                  </div>
+                )}
+
+                {successMessage && (
+                  <div className="my-5 px-3 py-2 text-lg rounded-lg text-green-600 flex items-center border border-green-600 bg-green-50">
+                    <i className="bx bx-check text-3xl"></i>
+                    <span>{successMessage}</span>
                   </div>
                 )}
 
