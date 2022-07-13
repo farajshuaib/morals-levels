@@ -19,3 +19,13 @@ export const loginSchema = yup.object().shape({
     .required("يجب ادخال البريد الالكتروني"),
   password: yup.string().required("يجب ادخال كلمة المرور"),
 });
+
+export const addUserValidationSchema = yup.object().shape({
+  name: yup.string().required("يجب ادخال  اسم الطالب"),
+  email: yup
+    .string()
+    .email("الرجاء التحقق من صحة البريد الالكتروني")
+    .required("يجب ادخال البريد الالكتروني"),
+  student_id: yup.string().required("يجب ادخال رقم قيد الطالب "),
+  password: yup.string().required("يجب ادخال كلمة المرور"),
+});

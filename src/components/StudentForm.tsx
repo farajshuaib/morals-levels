@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { ErrorMessage, Field, Formik } from "formik";
-import { addValueValidationSchema } from "../services/validation";
+import { addUserValidationSchema } from "../services/validation";
 import { useStoreActions } from "easy-peasy";
-import { MoralData, User, UserData } from "../types";
+import { User, UserData } from "../types";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 interface props {
   editItem?: User;
@@ -11,18 +12,17 @@ interface props {
 const UserForm: React.FC<props> = ({ editItem }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const addUser = useStoreActions<any>(
-    (actions) => actions.users.addUser
-  );
+  const addUser = useStoreActions<any>((actions) => actions.users.addUser);
   const updateUser = useStoreActions<any>(
     (actions) => actions.morals.updateUser
   );
   const [initialValues, setInitialValues] = useState<UserData>({
     name: "",
     email: "",
+    password: "",
     student_id: "",
-    status:"approved",
-    role: "student"
+    status: "approved",
+    role: "student",
   });
 
   useEffect(() => {
@@ -34,25 +34,45 @@ const UserForm: React.FC<props> = ({ editItem }) => {
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={addValueValidationSchema}
+      validationSchema={addUserValidationSchema}
       enableReinitialize
       onSubmit={async (values, { setSubmitting, resetForm }) => {
         setSuccessMessage("");
         setErrorMessage("");
-
-        try {
-          editItem
-            ? await updateUser({ id: editItem?.id, data: values })
-            : await addUser(values);
-          setSubmitting(false);
-          resetForm();
-          setSuccessMessage(
-            editItem ? "تم التعديل بنجاح" : "تم اضافة الطالب بنجاح "
-          );
-        } catch (e) {
-          setSubmitting(false);
-          setErrorMessage("حدث خطأ ما الرجاء الاتصال بالدعم الفني");
-          console.log(e);
+        if (!editItem) {
+          const auth = getAuth();
+          
+          createUserWithEmailAndPassword(auth, values.email, values.password)
+            .then(async (userCredential) => {
+              const user = userCredential.user;
+              try {
+                await addUser({
+                  ...values,
+                  id: user.uid,
+                });
+                setSubmitting(false);
+                setSuccessMessage("تم تسجيل الطالب بنجاح");
+                resetForm();
+              } catch (e) {
+                setErrorMessage("حدث خطأ ما الرجاء الاتصال بالدعم الفني");
+              }
+            })
+            .catch((error) => {
+              setSubmitting(false);
+              console.log("fire error =>", error.code, error.message);
+              setErrorMessage(error.message);
+            });
+        } else {
+          try {
+            await updateUser({ id: editItem?.id, data: values });
+            setSubmitting(false);
+            resetForm();
+            setSuccessMessage("تم تعديل بيانات الطالب بنجاح");
+          } catch (e) {
+            setSubmitting(false);
+            setErrorMessage("حدث خطأ ما الرجاء الاتصال بالدعم الفني");
+            console.log(e);
+          }
         }
       }}
     >
@@ -63,19 +83,16 @@ const UserForm: React.FC<props> = ({ editItem }) => {
         handleReset,
         handleSubmit,
         isSubmitting,
-      }: any) => (
+        errors,
+      }:any) => (
         <div>
+          {JSON.stringify(errors)}
           {[
             {
               name: "name",
+              type: "text",
               placeholder: "ادخل اسم الطالب",
               label: "اسم الطالب",
-            },
-            {
-              name: "email",
-              type: "email",
-              label: "البريد  الالكتروني",
-              placeholder: "ادخل البريد الالكتروني الخاص بالطالب",
             },
             {
               name: "student_id",
@@ -83,17 +100,33 @@ const UserForm: React.FC<props> = ({ editItem }) => {
               label: "رقم القيد",
               placeholder: "ادخل رقم قيد الطالب",
             },
+            {
+              name: "email",
+              type: "email",
+              label: "البريد  الالكتروني",
+              disabled: !!editItem,
+              placeholder: "ادخل البريد الالكتروني الخاص بالطالب",
+            },
+            {
+              name: "password",
+              type: "password",
+              label: "كلمة المرور",
+              disabled: !!editItem,
+              placeholder: "ادخل كلمة مرور خاصة بالطالب",
+            },
           ].map((item, index) => (
             <div key={index} className="my-5 w-full">
               <label htmlFor={item.name} className="input-lable">
                 {item.label}
               </label>
+
               <Field
                 id={item.name}
                 type={item.type || "text"}
                 className="input"
                 required={true}
                 placeholder={item.placeholder}
+                disabled={item.disabled}
                 value={values[item.name]}
                 onBlur={handleBlur(item.name)}
                 onChange={handleChange(item.name)}

@@ -41,12 +41,13 @@ export interface UserDataModel {
   get: Computed<UserDataModel, User | null>;
 }
 
-export type userRole = "student" | "teacher"
+export type userRole = "student" | "teacher";
 
 export interface UserData {
   name: string;
   email: string;
   student_id: string;
+  password: string;
   status: userStatus;
   role: userRole;
 }

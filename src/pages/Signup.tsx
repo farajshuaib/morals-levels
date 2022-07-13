@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
-import { loginSchema } from "../services/validation";
+import { addUserValidationSchema } from "../services/validation";
 
 // import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import banner from "../assets/Banner.jpeg";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useStoreActions } from "easy-peasy";
 
@@ -27,7 +26,7 @@ const SignUp: React.FC = () => {
           status: "waiting",
           role: "student",
         }}
-        validationSchema={loginSchema}
+        validationSchema={addUserValidationSchema}
         onSubmit={async (values, { setSubmitting }) => {
           setError("");
           const auth = getAuth();

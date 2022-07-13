@@ -7,8 +7,11 @@ import Table from "../components/utils/Table";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import Safe from "../components/utils/Safe";
 import { toast } from "react-toastify";
+import StudentForm from "../components/StudentForm";
+import Modal from "../components/utils/Modal";
 
 const Users: React.FC = () => {
+  const [modalContent, setModalContent] = useState<React.ReactNode>();
   const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const getValues = useStoreActions<any>((actions) => actions.users.getUsers);
@@ -53,8 +56,13 @@ const Users: React.FC = () => {
       <main className="container mx-auto px-5 md:px-8 py-12">
         <div className="flex items-center justify-between my-5">
           <h1 className="text-2xl text-gray-800">الطلبة المسجلين </h1>
-          <button className=" btn-primary">
-            <span>اضافة طالب</span>
+          <button
+            onClick={() => {
+              setModalContent(<StudentForm />);
+            }}
+            className="btn btn-primary"
+          >
+            اضافة طالب
           </button>
         </div>
 
@@ -125,6 +133,19 @@ const Users: React.FC = () => {
           </Table>
         </Safe>
       </main>
+
+      <Modal isVisible={!!modalContent} close={() => setModalContent(null)}>
+        <div className="bg-white w-full md:w-1/2 p-8 rounded-lg relative overflow-auto">
+          <button
+            className="float-left bg-light-opacity rounded-full h-8 w-8 flex items-center justify-center"
+            onClick={() => setModalContent(null)}
+          >
+            <i className="bx bx-x text-4xl "></i>
+          </button>
+          <div className="clear-both"></div>
+          {modalContent}
+        </div>
+      </Modal>
     </div>
   );
 };

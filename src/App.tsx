@@ -7,7 +7,6 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useStoreActions } from "easy-peasy";
 import { getUserByEmail } from "./services/usersCRUD";
 
-
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const routing = useRoutes(router());
@@ -15,19 +14,28 @@ const App: React.FC = () => {
     (actions) => actions.userData.setUserData
   );
 
-
   useEffect(() => {
     const auth = getAuth();
-    onAuthStateChanged(auth, async (user) => {
-      if (user && user.email) {
-        const userData = await getUserByEmail(user.email);
+    const user = auth.currentUser;
+    if (user && user.email) {
+      getUserByEmail(user.email).then((userData) => {
         setUserData(userData);
         setLoading(false);
-      } else {
-        setUserData(null);
-        setLoading(false);
-      }
-    });
+      });
+    } else {
+      setUserData(null);
+      setLoading(false);
+    }
+    // onAuthStateChanged(auth, async (user) => {
+    //   if (user && user.email) {
+    //     const userData = await getUserByEmail(user.email);
+    //     setUserData(userData);
+    //     setLoading(false);
+    //   } else {
+    //     setUserData(null);
+    //     setLoading(false);
+    //   }
+    // });
   }, []);
 
   if (loading) {

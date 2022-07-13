@@ -35,10 +35,10 @@ const getUsers = () => {
   });
 };
 
-const addUser = (User: User) => {
+const addUser = (user: User) => {
   return new Promise<User>(async (resolve, reject) => {
     try {
-      const docRef = await addDoc(_usersRef, { ...User });
+      const docRef = await addDoc(_usersRef, { ...user });
       const snapShot = await getDoc(docRef);
       resolve({ id: snapShot.id, data: snapShot.data() as UserData });
     } catch (e) {
@@ -60,7 +60,7 @@ const getUserByEmail = (email: string) => {
           return { id: doc.id, data: doc.data() as UserData };
         }
       ) as User[];
-      console.log("usersList",usersList)
+      console.log("usersList", usersList);
       if (usersList.length > 0) {
         resolve(usersList[0]);
       } else {
