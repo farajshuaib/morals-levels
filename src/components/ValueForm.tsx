@@ -65,11 +65,11 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
       }) => (
         <div>
           {/* القيمة */}
-          <div className="flex items-center justify-between gap-5 my-5">
-            <div>
+          <div className="flex items-center md:justify-between flex-wrap md:flex-nowrap gap-5 my-5">
+            <div className="w-full md:w-1/4">
               <label
                 htmlFor="ExaggerateValueName"
-                className="text-center block input-lable"
+                className="md:text-center block input-lable"
               >
                 المبالغة
               </label>
@@ -90,14 +90,14 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
               />
             </div>
 
-            <div className="flex-1">
-              <label htmlFor="valueName" className="text-center block input-lable">
+            <div className="flex-1 w-full">
+              <label htmlFor="valueName" className="md:text-center block input-lable">
                 القيمة
               </label>
               <Field
                 id="valueName"
                 type="text"
-                className="input py-3"
+                className="input w-full py-3"
                 placeholder="مثلا: الشجاعة"
                 required={true}
                 value={values.valueName}
@@ -111,10 +111,10 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
               />
             </div>
 
-            <div>
+            <div className="w-full md:w-1/4">
               <label
                 htmlFor="DerelictionValueName"
-                className="text-center block input-lable"
+                className="md:text-center block input-lable"
               >
                 التقصير
               </label>
