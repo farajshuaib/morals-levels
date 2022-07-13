@@ -4,7 +4,7 @@ import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen";
 import { toast } from "react-toastify";
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 
 const NavBar: React.FC = () => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const NavBar: React.FC = () => {
   const setUserData = useStoreActions<any>(
     (actions) => actions.userData.setUserData
   );
-
+  const userData = useStoreState<any>((actions) => actions.userData.get);
 
   const logout = async () => {
     try {
@@ -37,7 +37,9 @@ const NavBar: React.FC = () => {
           <h1 className="text-3xl text-white font-bold">القيم الأخلاقية</h1>
         </NavLink>
         <div className="flex items-center gap-8 text-white font-medium text-lg">
-          <NavLink to="/students">الطلبة</NavLink>
+          {userData.data.role == "teacher" && (
+            <NavLink to="/students">الطلبة</NavLink>
+          )}
           <button onClick={logout}>تسجيل الخروج</button>
         </div>
       </div>

@@ -34,35 +34,38 @@ export interface MoralsModel {
 
 export type userStatus = "approved" | "rejected" | "waiting" | "suspended";
 
-
+// current user
 export interface UserDataModel {
-  data: Student | null;
-  setUserData: Action<UserDataModel, Student>;
-  get: Computed<UserDataModel, Student | null>;
+  data: User | null;
+  setUserData: Action<UserDataModel, User>;
+  get: Computed<UserDataModel, User | null>;
 }
 
-export interface StudentData {
+export type userRole = "student" | "teacher"
+
+export interface UserData {
   name: string;
   email: string;
   student_id: string;
   status: userStatus;
+  role: userRole;
 }
 
-export interface Student {
+export interface User {
   id: string;
-  data: StudentData;
+  data: UserData;
 }
 
-export interface StudentModel {
-  students: Student[];
-  setStudents: Action<StudentModel, Student[]>;
-  getStudents: Thunk<StudentModel, Student>;
-  addStudentToList: Action<StudentModel, Student>;
-  addStudent: Thunk<StudentModel, Student>;
-  removeStudent: Action<StudentModel, string>;
-  deleteStudent: Thunk<StudentModel, string>;
-  updateStudent: Thunk<StudentModel, Student>;
-  setStudent: Action<StudentModel, Student>;
-  getStudentById: Thunk<StudentModel, string>;
-  get_students: Computed<StudentModel, Student[]>;
+export interface UserModel {
+  users: User[];
+  setUsers: Action<UserModel, User[]>;
+  getUsers: Thunk<UserModel, User>;
+  addUserToList: Action<UserModel, User>;
+  addUser: Thunk<UserModel, User>;
+  removeUser: Action<UserModel, string>;
+  deleteUser: Thunk<UserModel, string>;
+  updateUser: Thunk<UserModel, User>;
+  setUser: Action<UserModel, User>;
+  getUserById: Thunk<UserModel, string>;
+  get_users: Computed<UserModel, User[]>;
 }

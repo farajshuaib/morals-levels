@@ -1,28 +1,20 @@
 import React, { useEffect, useState } from "react";
 import LoadingScreen from "../components/utils/LoadingScreen";
 import NavBar from "../components/utils/NavBar";
-import { Student, userStatus } from "../types";
+import { User, userStatus } from "../types";
 
 import Table from "../components/utils/Table";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import Safe from "../components/utils/Safe";
-import StudentForm from "../components/StudentForm";
-import DeleteModal from "../components/utils/DeleteModal";
 import { toast } from "react-toastify";
 
-const Students: React.FC = () => {
-  const [deleteItem, setDeleteItem] = useState<Student | null>();
-
-  const [data, setData] = useState<Student[]>([]);
+const Users: React.FC = () => {
+  const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const getValues = useStoreActions<any>(
-    (actions) => actions.students.getStudents
-  );
-  const Student: Student[] = useStoreState<any>(
-    (state) => state.students.get_students
-  );
+  const getValues = useStoreActions<any>((actions) => actions.users.getUsers);
+  const User: User[] = useStoreState<any>((state) => state.users.get_users);
   const updateStudent = useStoreActions<any>(
-    (actions) => actions.students.updateStudent
+    (actions) => actions.users.updateStudent
   );
 
   const getData = async () => {
@@ -35,13 +27,13 @@ const Students: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setData(Student);
-  }, [Student]);
+    setData(User);
+  }, [User]);
 
-  const setUserStatus = async (student: Student, status: userStatus) => {
+  const setUserStatus = async (User: User, status: userStatus) => {
     try {
       setLoading(true);
-      await updateStudent({ ...student, data: { ...student.data, status } });
+      await updateStudent({ ...User, data: { ...User.data, status } });
       toast.success("تم تحديث حالة الطالب بنجاح");
       setLoading(false);
     } catch (err) {
@@ -55,12 +47,15 @@ const Students: React.FC = () => {
   }
 
   return (
-    <div className="Student">
+    <div className="User">
       <NavBar />
 
       <main className="container mx-auto px-5 md:px-8 py-12">
         <div className="flex items-center justify-between my-5">
           <h1 className="text-2xl text-gray-800">الطلبة المسجلين </h1>
+          <button className=" btn-primary">
+            <span>اضافة طالب</span>
+          </button>
         </div>
 
         <Safe data={data}>
@@ -130,17 +125,8 @@ const Students: React.FC = () => {
           </Table>
         </Safe>
       </main>
-
-      {/* <DeleteModal
-        visible={!!deleteItem}
-        hide={() => setDeleteItem(null)}
-        submit={async () => {
-          await deleteStudent(deleteItem?.id);
-          setDeleteItem(null);
-        }}
-      /> */}
     </div>
   );
 };
 
-export default Students;
+export default Users;

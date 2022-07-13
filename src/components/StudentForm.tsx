@@ -2,26 +2,27 @@ import React, { useEffect, useState } from "react";
 import { ErrorMessage, Field, Formik } from "formik";
 import { addValueValidationSchema } from "../services/validation";
 import { useStoreActions } from "easy-peasy";
-import { MoralData, Student, StudentData } from "../types";
+import { MoralData, User, UserData } from "../types";
 
 interface props {
-  editItem?: Student;
+  editItem?: User;
 }
 
-const StudentForm: React.FC<props> = ({ editItem }) => {
+const UserForm: React.FC<props> = ({ editItem }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const addStudent = useStoreActions<any>(
-    (actions) => actions.students.addStudent
+  const addUser = useStoreActions<any>(
+    (actions) => actions.users.addUser
   );
-  const updateStudent = useStoreActions<any>(
-    (actions) => actions.morals.updateStudent
+  const updateUser = useStoreActions<any>(
+    (actions) => actions.morals.updateUser
   );
-  const [initialValues, setInitialValues] = useState<StudentData>({
+  const [initialValues, setInitialValues] = useState<UserData>({
     name: "",
     email: "",
     student_id: "",
-    status:"waiting"
+    status:"approved",
+    role: "student"
   });
 
   useEffect(() => {
@@ -41,8 +42,8 @@ const StudentForm: React.FC<props> = ({ editItem }) => {
 
         try {
           editItem
-            ? await updateStudent({ id: editItem?.id, data: values })
-            : await addStudent(values);
+            ? await updateUser({ id: editItem?.id, data: values })
+            : await addUser(values);
           setSubmitting(false);
           resetForm();
           setSuccessMessage(
@@ -146,4 +147,4 @@ const StudentForm: React.FC<props> = ({ editItem }) => {
   );
 };
 
-export default StudentForm;
+export default UserForm;

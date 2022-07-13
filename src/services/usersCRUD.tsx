@@ -1,4 +1,4 @@
-import { StudentData, Student } from "./../types";
+import { UserData, User } from "./../types";
 import { toast } from "react-toastify";
 import {
   collection,
@@ -15,18 +15,18 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 
-const _studentsRef = collection(db, "students");
+const _usersRef = collection(db, "users");
 
-const getStudents = () => {
-  return new Promise<Student[]>(async (resolve, reject) => {
+const getUsers = () => {
+  return new Promise<User[]>(async (resolve, reject) => {
     try {
-      const studentsSnapshot = await getDocs(_studentsRef);
-      const studentsList = studentsSnapshot.docs.map(
+      const usersSnapshot = await getDocs(_usersRef);
+      const usersList = usersSnapshot.docs.map(
         (doc: QueryDocumentSnapshot<DocumentData>) => {
-          return { id: doc.id, data: doc.data() as StudentData };
+          return { id: doc.id, data: doc.data() as UserData };
         }
-      ) as Student[];
-      resolve(studentsList);
+      ) as User[];
+      resolve(usersList);
     } catch (e) {
       console.error("error", e);
       toast.error("حدث خطأ ما، الرجاء اعادة المحاولة او الاتصال بالدعم الفني");
@@ -35,12 +35,12 @@ const getStudents = () => {
   });
 };
 
-const addStudent = (student: Student) => {
-  return new Promise<Student>(async (resolve, reject) => {
+const addUser = (User: User) => {
+  return new Promise<User>(async (resolve, reject) => {
     try {
-      const docRef = await addDoc(_studentsRef, { ...student });
+      const docRef = await addDoc(_usersRef, { ...User });
       const snapShot = await getDoc(docRef);
-      resolve({ id: snapShot.id, data: snapShot.data() as StudentData });
+      resolve({ id: snapShot.id, data: snapShot.data() as UserData });
     } catch (e) {
       console.error("error", e);
       toast.error("حدث خطأ ما، الرجاء اعادة المحاولة او الاتصال بالدعم الفني");
@@ -49,20 +49,20 @@ const addStudent = (student: Student) => {
   });
 };
 
-const getStudentByEmail = (email: string) => {
+const getUserByEmail = (email: string) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const q = query(_studentsRef, where("email", "==", email));
+      const q = query(_usersRef, where("email", "==", email));
 
-      const studentsSnapshot = await getDocs(q);
-      const studentsList = studentsSnapshot.docs.map(
+      const usersSnapshot = await getDocs(q);
+      const usersList = usersSnapshot.docs.map(
         (doc: QueryDocumentSnapshot<DocumentData>) => {
-          return { id: doc.id, data: doc.data() as StudentData };
+          return { id: doc.id, data: doc.data() as UserData };
         }
-      ) as Student[];
-      console.log("studentsList",studentsList)
-      if (studentsList.length > 0) {
-        resolve(studentsList[0]);
+      ) as User[];
+      console.log("usersList",usersList)
+      if (usersList.length > 0) {
+        resolve(usersList[0]);
       } else {
         resolve(null);
       }
@@ -74,10 +74,10 @@ const getStudentByEmail = (email: string) => {
   });
 };
 
-const deleteStudent = (id: string) => {
+const deleteUser = (id: string) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await deleteDoc(doc(db, "students", id));
+      const res = await deleteDoc(doc(db, "users", id));
       resolve(res);
     } catch (e) {
       console.error("error", e);
@@ -87,13 +87,13 @@ const deleteStudent = (id: string) => {
   });
 };
 
-const updateStudent = (student: Student) => {
-  return new Promise<Student>(async (resolve, reject) => {
+const updateUser = (User: User) => {
+  return new Promise<User>(async (resolve, reject) => {
     try {
-      if (!student.id) return;
-      await updateDoc(doc(db, "students", student.id), { ...student.data });
-      const res = await getDoc(doc(db, "students", student.id));
-      resolve({ id: res.id, data: res.data() as StudentData });
+      if (!User.id) return;
+      await updateDoc(doc(db, "users", User.id), { ...User.data });
+      const res = await getDoc(doc(db, "users", User.id));
+      resolve({ id: res.id, data: res.data() as UserData });
     } catch (e) {
       console.error("error", e);
       toast.error("حدث خطأ ما، الرجاء اعادة المحاولة او الاتصال بالدعم الفني");
@@ -102,10 +102,10 @@ const updateStudent = (student: Student) => {
   });
 };
 
-const getStudentById = (id: string) => {
+const getUserById = (id: string) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const res = await getDoc(doc(db, "students", id));
+      const res = await getDoc(doc(db, "users", id));
       resolve(res);
     } catch (e) {
       console.error("error", e);
@@ -116,10 +116,10 @@ const getStudentById = (id: string) => {
 };
 
 export {
-  getStudents,
-  addStudent,
-  deleteStudent,
-  updateStudent,
-  getStudentById,
-  getStudentByEmail,
+  getUsers,
+  addUser,
+  deleteUser,
+  updateUser,
+  getUserById,
+  getUserByEmail,
 };

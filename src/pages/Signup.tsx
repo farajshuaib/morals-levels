@@ -12,8 +12,8 @@ const SignUp: React.FC = () => {
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState<string>("");
-  const addStudent = useStoreActions<any>(
-    (actions) => actions.students.addStudent
+  const addUser = useStoreActions<any>(
+    (actions) => actions.users.addUser
   );
 
   return (
@@ -25,6 +25,7 @@ const SignUp: React.FC = () => {
           password: "",
           student_id: "",
           status: "waiting",
+          role: "student",
         }}
         validationSchema={loginSchema}
         onSubmit={async (values, { setSubmitting }) => {
@@ -34,12 +35,9 @@ const SignUp: React.FC = () => {
             .then(async (userCredential) => {
               const user = userCredential.user;
               try {
-                await addStudent({
+                await addUser({
+                  ...values,
                   id: user.uid,
-                  email: values.email,
-                  name: values.name,
-                  student_id: values.student_id,
-                  status: values.status,
                 });
                 setSubmitting(false);
                 setSuccessMessage(
@@ -51,6 +49,7 @@ const SignUp: React.FC = () => {
             })
             .catch((error) => {
               setSubmitting(false);
+              console.log("fire error =>", error.code, error.message);
               setError(error.message);
             });
         }}

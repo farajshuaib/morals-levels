@@ -7,10 +7,9 @@ import { useNavigate } from "react-router-dom";
 import banner from "../assets/Banner.jpeg";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useStoreActions } from "easy-peasy";
-import { getStudentByEmail } from "../services/studentsCRUD";
+import { getUserByEmail } from "../services/usersCRUD";
 import { toast } from "react-toastify";
-import { Student, userStatus } from "../types";
-
+import { User, userStatus } from "../types";
 
 const notifyDataUpdate = (status: userStatus) => {
   switch (status) {
@@ -36,8 +35,6 @@ const notifyDataUpdate = (status: userStatus) => {
     }
   }
 };
-
-
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
@@ -67,10 +64,13 @@ const Login: React.FC = () => {
                 return;
               }
               try {
-                const userData = await getStudentByEmail(user.email) as Student;
+                const userData = (await getUserByEmail(user.email)) as User;
                 if (userData) {
                   setUserData(userData);
                   notifyDataUpdate(userData.data.status);
+                  if (userData.data.status == "approved") {
+                    navigate("/");
+                  }
                 } else {
                   setError("المستخدم غير موجود");
                 }
