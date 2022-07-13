@@ -16,8 +16,8 @@ const Users: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const getValues = useStoreActions<any>((actions) => actions.users.getUsers);
   const User: User[] = useStoreState<any>((state) => state.users.get_users);
-  const updateStudent = useStoreActions<any>(
-    (actions) => actions.users.updateStudent
+  const updateUser = useStoreActions<any>(
+    (actions) => actions.users.updateUser
   );
 
   const getData = async () => {
@@ -36,7 +36,7 @@ const Users: React.FC = () => {
   const setUserStatus = async (User: User, status: userStatus) => {
     try {
       setLoading(true);
-      await updateStudent({ ...User, data: { ...User.data, status } });
+      await updateUser({ ...User, data: { ...User.data, status } });
       toast.success("تم تحديث حالة الطالب بنجاح");
       setLoading(false);
     } catch (err) {
