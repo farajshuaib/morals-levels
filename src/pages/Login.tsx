@@ -4,7 +4,7 @@ import { loginSchema } from "../services/validation";
 
 // import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import banner from "../assets/Banner.jpeg";
+import banner from "../assets/Banner.jpeg"; 
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useStoreActions } from "easy-peasy";
 import { getUserByEmail } from "../services/usersCRUD";
