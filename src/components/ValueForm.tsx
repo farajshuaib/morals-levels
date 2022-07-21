@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ErrorMessage, Field, Formik } from "formik";
 import { addValueValidationSchema } from "../services/validation";
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import { MoralData, MoralValue } from "../types";
 
 interface props {
@@ -14,6 +14,7 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
   const updateValue = useStoreActions<any>(
     (actions) => actions.morals.updateValue
   );
+  const userData = useStoreState<any>((actions) => actions.userData.get);
   const [initialValues, setInitialValues] = useState<MoralData>({
     valueName: "",
     ExaggerateValueName: "",
@@ -43,7 +44,7 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
         setErrorMessage("");
         try {
           editItem
-            ? await updateValue({ id: editItem?.id, data: values })
+            ? await updateValue({ id: editItem?.id, data: {...values, student_id: userData.student_id} })
             : await addValue(values);
           setSubmitting(false);
           resetForm();

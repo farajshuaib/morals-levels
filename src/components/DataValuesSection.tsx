@@ -61,6 +61,7 @@ const DataValuesSection: React.FC<props> = ({ setDeleteItem, setEditItem }) => {
             "مدرسة القيم",
             "نوع قيم",
             "وقع القيمة",
+            "تمت الاضافة بواسطة",
             "",
           ]}
         >
@@ -98,6 +99,9 @@ const DataValuesSection: React.FC<props> = ({ setDeleteItem, setEditItem }) => {
               </td>
               <td className="px-6 py-3 whitespace-nowrap">
                 {item.data.ActivationValue}
+              </td>
+              <td className="px-6 py-3 whitespace-nowrap">
+                {item.data?.student_id || "استاذ المادة"}
               </td>
               <td className="px-6 py-3 whitespace-nowrap flex items-center gap-5  text-2xl">
                 <button onClick={() => setDeleteItem(item)}>

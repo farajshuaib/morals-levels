@@ -11,6 +11,7 @@ export interface MoralData {
   SchoolValue: String;
   TypedValue: String;
   ActivationValue: String;
+  student_id?: String;
 }
 
 export interface MoralValue {

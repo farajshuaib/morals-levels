@@ -29,6 +29,7 @@ if ("serviceWorker" in navigator) {
 } else {
   console.log("browser does not support service worker");
 }
+
 const Wrapper: React.FC = () => {
   useRegisterSW({
     onRegistered(r) {
@@ -44,7 +45,14 @@ const Wrapper: React.FC = () => {
         {/*  @ts-ignore: Unreachable code error */}
         <StoreProvider store={store}>
           <App />
-          <ToastContainer />
+          <ToastContainer
+            hideProgressBar={true}
+            closeOnClick
+            rtl={true}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
         </StoreProvider>
       </BrowserRouter>
     </React.StrictMode>
