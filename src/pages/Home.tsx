@@ -73,7 +73,7 @@ const Home = () => {
       </footer>
 
       <Modal isVisible={!!modalContent} close={() => setModalContent(null)}>
-        <div className="bg-white w-full md:w-1/2 p-8 rounded-lg relative max-h-3/4 overflow-auto">
+        <div className="bg-white w-full md:w-1/2 p-8 rounded-lg relative h-3/4 overflow-auto">
           <button
             className="float-left bg-light-opacity rounded-full h-8 w-8 flex items-center justify-center"
             onClick={() => setModalContent(null)}
