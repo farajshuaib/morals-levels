@@ -34,6 +34,8 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
     }
   }, [editItem]);
 
+  console.log("userData",userData)
+
   return (
     <div className="">
       <Formik
@@ -47,9 +49,9 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
             editItem
               ? await updateValue({
                   id: editItem?.id,
-                  data: { ...values, student_id: userData.student_id },
+                  data: { ...values, student_id: userData?.data?.student_id },
                 })
-              : await addValue({ ...values, student_id: userData.student_id });
+              : await addValue({ ...values, student_id: userData?.data?.student_id });
             setSubmitting(false);
             resetForm();
             setSuccessMessage(
