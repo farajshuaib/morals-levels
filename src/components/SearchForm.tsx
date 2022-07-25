@@ -27,7 +27,8 @@ const SearchForm: React.FC<props> = ({ values, setData }) => {
           item.data.SchoolValue.match(searchValue) ||
           item.data.StandardValue.match(searchValue) ||
           item.data.TypedValue.match(searchValue) ||
-          item.data.SourcedValue.match(searchValue)
+          item.data.SourcedValue.match(searchValue) ||
+          item.data.student_id?.match(searchValue) 
       )
     );
   }, [searchValue]);

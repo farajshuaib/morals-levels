@@ -34,7 +34,7 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
     }
   }, [editItem]);
 
-  console.log("userData",userData)
+  console.log("userData", userData);
 
   return (
     <div className="">
@@ -46,12 +46,19 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
           setSuccessMessage("");
           setErrorMessage("");
           try {
+            console.log("userData", userData);
             editItem
               ? await updateValue({
                   id: editItem?.id,
-                  data: { ...values, student_id: userData?.data?.student_id },
+                  data: {
+                    ...values,
+                    student_id: userData?.data.student_id || "",
+                  },
                 })
-              : await addValue({ ...values, student_id: userData?.data?.student_id });
+              : await addValue({
+                  ...values,
+                  student_id: userData?.data.student_id || "",
+                });
             setSubmitting(false);
             resetForm();
             setSuccessMessage(
@@ -150,7 +157,7 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
 
             {[
               {
-                label: "القيم بمعايير الرقي",
+                label: "القيم بمعايير رقي المجتمع",
                 name: "StandardValue",
                 placeholder: "",
                 values: [
@@ -173,6 +180,7 @@ const ValueForm: React.FC<props> = ({ editItem }) => {
                   "التقاليد و الاعراف",
                   "القانون",
                   "المشاعر (الفطرة)",
+                  "العلم",
                 ],
               },
               {

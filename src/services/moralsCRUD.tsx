@@ -10,6 +10,8 @@ import {
   deleteDoc,
   QueryDocumentSnapshot,
   DocumentData,
+  query,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebase/config";
 
@@ -25,6 +27,39 @@ const getValues = () => {
         }
       ) as MoralValue[];
       resolve(valuesList);
+    } catch (e) {
+      console.error("error", e);
+      toast.error("حدث خطأ ما، الرجاء اعادة المحاولة او الاتصال بالدعم الفني");
+      reject(e);
+    }
+  });
+};
+
+const updateAllVisibility = async (isVisible: boolean) => {
+  try {
+    const valuesSnapshot = await getDocs(_valuesRef);
+    valuesSnapshot.docs.forEach(
+      async (document: QueryDocumentSnapshot<DocumentData>) => {
+        await updateDoc(doc(db, "values", document.id), {
+          ...document.data(),
+          visible: isVisible,
+        });
+      }
+    );
+    toast.success("تم تحديث حالة الطلبة بنجاح");
+  } catch (e) {
+    console.error("error", e);
+    toast.error("حدث خطأ ما، الرجاء اعادة المحاولة او الاتصال بالدعم الفني");
+  }
+};
+
+const updateValueVisibility = (value: MoralValue, visible: boolean) => {
+  return new Promise<MoralValue>(async (resolve, reject) => {
+    try {
+      if (!value.id) return;
+      await updateDoc(doc(db, "values", value.id), { ...value.data, visible });
+      const res = await getDoc(doc(db, "values", value.id));
+      resolve({ id: res.id, data: res.data() as MoralData });
     } catch (e) {
       console.error("error", e);
       toast.error("حدث خطأ ما، الرجاء اعادة المحاولة او الاتصال بالدعم الفني");
@@ -88,4 +123,12 @@ const getValueById = (id: string) => {
   });
 };
 
-export { getValues, addValue, deleteValue, updateValue, getValueById };
+export {
+  getValues,
+  addValue,
+  deleteValue,
+  updateValue,
+  getValueById,
+  updateAllVisibility,
+  updateValueVisibility,
+};

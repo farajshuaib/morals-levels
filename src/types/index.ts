@@ -12,6 +12,7 @@ export interface MoralData {
   TypedValue: String;
   ActivationValue: String;
   student_id?: String;
+  visible?: boolean;
 }
 
 export interface MoralValue {
