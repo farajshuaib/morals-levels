@@ -8,6 +8,7 @@ import DeleteModal from "../components/utils/DeleteModal";
 import ValueForm from "../components/ValueForm";
 import { useStoreActions } from "easy-peasy";
 import NavBar from "../components/utils/NavBar";
+import { toast } from "react-toastify";
 
 const Home = () => {
   const [modalContent, setModalContent] = useState<React.ReactNode>();
@@ -90,6 +91,7 @@ const Home = () => {
         hide={() => setDeleteItem(null)}
         submit={async () => {
           await deleteValue(deleteItem?.id);
+          toast.success("تم حذف القيمة بنجاح");
           setDeleteItem(null);
         }}
       />

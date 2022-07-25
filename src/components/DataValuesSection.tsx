@@ -8,6 +8,7 @@ import {
   updateAllVisibility,
   updateValueVisibility,
 } from "../services/moralsCRUD";
+import { toast } from "react-toastify";
 
 interface props {
   setDeleteItem: (data: MoralValue) => void;
@@ -52,6 +53,7 @@ const DataValuesSection: React.FC<props> = ({ setDeleteItem, setEditItem }) => {
             onClick={async () => {
               setLoading(true);
               await updateAllVisibility(true);
+              await getValues()
               setLoading(false);
             }}
             className="bg-primary px-5 py-2 rounded-lg text-lg text-white"
@@ -62,6 +64,7 @@ const DataValuesSection: React.FC<props> = ({ setDeleteItem, setEditItem }) => {
             onClick={async () => {
               setLoading(true);
               await updateAllVisibility(false);
+              await getValues()
               setLoading(false);
             }}
             className="bg-green-500 px-5 py-2 rounded-lg text-lg text-white"
@@ -151,10 +154,12 @@ const DataValuesSection: React.FC<props> = ({ setDeleteItem, setEditItem }) => {
                               item,
                               item.data.visible ? false : true
                             );
+                            await getValues()
+                            toast.success("تم تحديث حالة عرض القيمة للطلبة")
                             setLoading(false);
                           }}
                         >
-                          {!!item.data.visible ? (
+                          {item.data.visible ? (
                             <i className="bx bx-hide"></i>
                           ) : (
                             <i className="bx bx-show"></i>
