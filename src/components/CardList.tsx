@@ -12,7 +12,6 @@ const ModalContent: React.FC<ModalContentProps> = ({
   description,
   classification,
 }) => {
-  console.log("classification", classification);
   return (
     <section className="w-full">
       <h1 className="text-4xl">{title}</h1>

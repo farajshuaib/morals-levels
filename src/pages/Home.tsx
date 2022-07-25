@@ -90,7 +90,7 @@ const Home = () => {
         hide={() => setDeleteItem(null)}
         submit={async () => {
           await deleteValue(deleteItem?.id);
-          setDeleteItem(null)
+          setDeleteItem(null);
         }}
       />
     </div>

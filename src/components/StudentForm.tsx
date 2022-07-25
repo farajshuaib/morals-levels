@@ -41,7 +41,7 @@ const UserForm: React.FC<props> = ({ editItem }) => {
         setErrorMessage("");
         if (!editItem) {
           const auth = getAuth();
-          
+
           createUserWithEmailAndPassword(auth, values.email, values.password)
             .then(async (userCredential) => {
               const user = userCredential.user;
@@ -84,9 +84,8 @@ const UserForm: React.FC<props> = ({ editItem }) => {
         handleSubmit,
         isSubmitting,
         errors,
-      }:any) => (
+      }: any) => (
         <div>
-          {JSON.stringify(errors)}
           {[
             {
               name: "name",
