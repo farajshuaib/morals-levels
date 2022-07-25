@@ -13,6 +13,7 @@ interface props {
 const DataValuesSection: React.FC<props> = ({ setDeleteItem, setEditItem }) => {
   const [data, setData] = useState<MoralValue[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const userData = useStoreState<any>((actions) => actions.userData.get);
   const getValues = useStoreActions<any>((actions) => actions.morals.getValues);
   const values: MoralValue[] = useStoreState<any>(
     (state) => state.morals.get_values
@@ -104,12 +105,16 @@ const DataValuesSection: React.FC<props> = ({ setDeleteItem, setEditItem }) => {
                 {item.data?.student_id || "استاذ المادة"}
               </td>
               <td className="px-6 py-3 whitespace-nowrap flex items-center gap-5  text-2xl">
-                <button onClick={() => setDeleteItem(item)}>
-                  <i className="bx bx-trash-alt text-red-600"></i>
-                </button>
-                <button onClick={() => setEditItem(item)}>
-                  <i className="bx bxs-edit text-green-500"></i>
-                </button>
+                {!userData.student_id && (
+                  <>
+                    <button onClick={() => setDeleteItem(item)}>
+                      <i className="bx bx-trash-alt text-red-600"></i>
+                    </button>
+                    <button onClick={() => setEditItem(item)}>
+                      <i className="bx bxs-edit text-green-500"></i>
+                    </button>
+                  </>
+                )}
               </td>
             </tr>
           ))}
